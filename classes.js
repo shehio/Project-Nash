@@ -1,9 +1,17 @@
 var Pair = class {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
+        if (!arguments.length) {
+            // intentionally left empty
+        }
+        else if (arguments.length == 1) {
+            this.x = x[0];
+            this.y = x[1];
+        }
+        else {
+            this.x = x;
+            this.y = y;
+        }
     }
-
     toString() {
         return `(${this.x}, ${this.y})`;
     }
@@ -43,7 +51,7 @@ var Node = class {
         this.children.push(child);
     }
 
-    is_leaf () {
+    is_leaf() {
         return (this.children.length == 0);
     }
 
@@ -57,6 +65,6 @@ var Node = class {
 
 module.exports = {
     Payoff: Payoff,
-    Pair: Pair, 
+    Pair: Pair,
     Node: Node
 }
