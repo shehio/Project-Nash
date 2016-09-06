@@ -1,11 +1,19 @@
+/**
+ *  @todo: shouldn't be called Pair anymore, add support for n number of points
+ */
 var Pair = class {
     constructor(x, y) {
         if (!arguments.length) {
             // intentionally left empty
         }
         else if (arguments.length == 1) {
-            this.x = x[0];
-            this.y = x[1];
+            if (typeof x === 'Array') {
+                this.x = x[0];
+                this.y = x[1];
+            }
+            else {
+                this.x = x;
+            }
         }
         else {
             this.x = x;
