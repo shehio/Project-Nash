@@ -6,7 +6,7 @@ const Payoff = classes.Payoff;
 const Pair = classes.Pair;
 const Node = classes.Node;
 const nash = require('./../index.js');
-
+const mm = require('./../minmax.js');
 
 var example = function () {
     var node = new Node();
@@ -32,13 +32,13 @@ var another_example = function () {
 describe('minmax: ', () => {
     it('works', (done) => {
         node = example();
-        console.log(nash.minmax(node, 1));
+        console.log(mm.minmax(node, 1));
         done();
     });
 
     it('works again', (done) => {
         node = another_example();
-        console.log(nash.minmax(node, 1));
+        console.log(mm.minmax(node, 1));
         done();
     });
 });
