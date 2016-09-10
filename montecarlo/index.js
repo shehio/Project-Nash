@@ -1,5 +1,5 @@
 
-const classes = require('./classes.js')
+const classes = require('./../classes.js')
 const Payoff = classes.Payoff;
 const Point = classes.Pair;
 
@@ -70,35 +70,15 @@ function calculate_radius(){
     return run(sample_number, generator, estimator_function) * area_of_square;
 }
 
-/**
- *  send an object option along with the function name, instead of trivial global variable.
- */
-function check_mean(point){
-    if(point.x > mean) {
-        return true;
-    }
-    return false;
+
+
+
+module.exports = {
+    d1: d1,
+    d2: d2, 
+    run: run
 }
 
 
-function coin_flip(){
-    let sample_number = 100000;
-    let generator = d1;
-    let estimator_function = check_mean;
-    return run(sample_number, generator, estimator_function);
-}
-
-/**
- *  @todo: some modularity and clean code!
- */
-
-function coin_flip(){
-    let sample_number = 100000;
-    let generator = d1; 
-    let estimator_function = check_mean;
-    return run(sample_number, generator, estimator_function);
-}
-
-console.log(coin_flip());
 
 console.log(calculate_radius());
