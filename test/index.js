@@ -6,7 +6,7 @@ const Payoff = classes.Payoff;
 const Pair = classes.Pair;
 const Node = classes.Node;
 const nash = require('./../index.js');
-const mm = require('./../minmax.js');
+const mm = require('./../minmax/index.js');
 
 var example = function () {
     var node = new Node();
