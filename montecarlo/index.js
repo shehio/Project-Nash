@@ -33,10 +33,8 @@ function random_point(dimension) {
 /**
  * @todo: fix discrepancies between d1 && d2 
  */
-function d2() {
-    let range = 2;
-    let start = 0;
-    return new Point(Math.random() * range - start, Math.random() * range - start);
+function d2(xstart, xrange, ystart, yrange) {
+    return () => new Point(Math.random() * xrange + xstart, Math.random() * yrange + ystart);
 }
 
 function d1() {
@@ -48,7 +46,7 @@ function d1() {
 module.exports = {
     d1: d1,
     d2: d2,
-    run: run, 
+    run: run,
     /**
      *  not sure if it's a good practice.
      */

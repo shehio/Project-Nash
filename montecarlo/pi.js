@@ -1,4 +1,4 @@
-const mc = require('./index.js')
+const mc = require('./index.js');
 
 function check_inside(point) {
     if (point === undefined || point === null) {
