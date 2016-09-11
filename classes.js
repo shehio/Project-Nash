@@ -1,5 +1,5 @@
 /**
- *  @todo: shouldn't be called Pair anymore, add support for n number of points
+ *  @todo: shouldn't be called Pair anymore, add support for n number of points.
  */
 var Pair = class {
     constructor(x, y) {

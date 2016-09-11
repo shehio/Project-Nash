@@ -2,7 +2,7 @@ const mc = require('./index.js');
 
 var mean = 0;
 /**
- *  @todo: some modularity and clean code!
+ *  @todo: some modularity and clean code.
  */
 /**
  *  send an object option along with the function name, instead of trivial global variable.

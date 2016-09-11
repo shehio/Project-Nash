@@ -31,7 +31,7 @@ function random_point(dimension) {
 }
 
 /**
- * @todo: fix discrepancies between d1 && d2 
+ * definitely broke something while changing it.
  */
 function d2(xstart, xrange, ystart, yrange) {
     return () => new Point(Math.random() * xrange + xstart, Math.random() * yrange + ystart);

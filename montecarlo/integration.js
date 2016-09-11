@@ -40,6 +40,7 @@ function calculate_area(start, end, order) {
     return square_below + mc.run(sample_number, generator, estimator_function) * area_of_square;
 }
 
+
 console.log(calculate_area(1, 2, 1));
 console.log(calculate_area(2, 5, 1));
 console.log(calculate_area(0, 3, 3));
