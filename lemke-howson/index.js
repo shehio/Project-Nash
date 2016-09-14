@@ -2,7 +2,9 @@ const classes = require('./../classes.js');
 const Payoff = classes.Payoff;
 const Pair = classes.Pair;
 const Node = classes.Node;
-
+const zero = 0;
+const one = 1;
+const two = 2;
 /**
  *  I rarely use mutuable objects, as they are not needed in these cases.
  *  FYI, can overflow.
@@ -42,9 +44,52 @@ function normalizeMatrices(matrix) {
 }
 
 
+function createTableaux(matrix) {
+    if (!matrix || !matrix instanceof Array) {
+        throw "matrix is null, or not an array.";
+    }
+    if (matrix.length == 0) {
+        throw "matrix is empty."
+    }
+    /**
+     *  Assume the matrix is 'regular', and now it's safe to check that after prior checks.
+     */
+    let strategies = matrix.length + matrix[0].length;
+    let p1s = matrix.length;
+    let p2s = matrix[0].length;
+    /**
+     *  Should have an (s) by (s + 2) matrix (two more columns)
+     */
+    let tableaux = new Array(strategies);
+    for (let i = 0; i < tableaux.length; i++) {
+        tableaux[i] = Array.apply(null, Array(strategies + 2)).map(Number.prototype.valueOf, 0);
+    }
+    /**
+     * 
+     */
+    for (let i = 0; i < tableaux.length; i++) {
+        tableaux[i][zero] = - (i + 1);
+    }
+    /**
+     * 
+     */
+    for (let i = 0; i < tableaux.length; i++) {
+        tableaux[i][one] = 1;
+    }
+
+    for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix[0].length; j++) {
+            tableaux[i + p1s][j + two] = matrix[i][j].y;
+            tableaux[i][j + two + p2s] = matrix[i][j].x;
+        }
+    }
+    return tableaux;
+
+}
 
 module.exports = {
-    normalizeMatrices: normalizeMatrices
+    normalizeMatrices: normalizeMatrices,
+    createTableaux: createTableaux
 }
 
 
@@ -62,3 +107,4 @@ console.log(matching_pennies());
 var mat = matching_pennies();
 normalizeMatrices(mat);
 console.log(mat);
+console.log(createTableaux(mat));
