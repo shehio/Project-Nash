@@ -21,11 +21,13 @@ function find_pure(matrix) {
     }
     return pure;
 }
+
 /**
  *  As always, player one is represented by x in (x,y) coordinates, 
  *  and his/her choices is represented vertically.
  *  The exact opposite for player two.
  */
+
 function check_neighbors(matrix, row, col) {
     var bool = true;
     var vertical = 1 - row;
