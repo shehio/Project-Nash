@@ -7,7 +7,7 @@ const one = 1;
 const two = 2;
 
 /**
- *  move this to a separate file.
+ *  @todo: move this to a separate file.
  */
 function range(start, stop, step) {
     if (typeof stop == 'undefined') {
@@ -31,8 +31,6 @@ function range(start, stop, step) {
 
     return result;
 }
-
-
 
 /**
  *  I rarely use mutuable objects, as they are not needed in these cases.
@@ -58,7 +56,7 @@ function normalizeMatrices(matrix) {
      *  @todo: change this.
      */
     if (min < 0) {
-        min = -min + 1;
+        min = - min + 1;
     }
     else {
         return;
@@ -224,6 +222,42 @@ function find_equilibrium(mat, p1s) {
 }
 
 
+function normalize(arr) {
+    if (typeof arr === 'undefined') {
+        throw 'Array is undefined.'
+    }
+    let norm = 0;
+    for (let i of arr) {
+        norm = norm + i;
+    }
+    let ret = new Array();
+    for (let i of arr) {
+        ret.push(i / norm);
+    }
+    return ret;
+}
+
+function normalize_equilibrium(mat) {
+    if (typeof mat === 'undefined') {
+        throw 'mat has to be defined.'
+    }
+    let types = new Array(typeof mat[zero], typeof mat[one]);
+    if ('undefined' in types) {
+        throw 'mat has empty probabilities.'
+    }
+    for (arr of mat) {
+        for (element of arr) {
+            if (typeof element === 'number') {
+                continue;
+            }
+            throw 'mat has non number probabilities.'
+        }
+    }
+    var ret = new Array();
+    ret.push(normalize(mat[zero]));
+    ret.push(normalize(mat[one]));
+    return ret;
+}
 function matching_pennies() {
     var matrix = new Array();
     var arr = [new Payoff(1, -1), new Payoff(-1, 1)];
@@ -234,13 +268,14 @@ function matching_pennies() {
 }
 
 
-function solve(mat) {
+function solve(mat, p1s) {
     console.log(mat);
     normalizeMatrices(mat);
     console.log(mat);
     mat = createTableaux(mat);
     console.log(mat);
-    makePivotingStep(mat, 2, 1);
+    makePivotingStep(mat, p1s, one);
+    console.log(mat);
 }
 
 module.exports = {
@@ -248,6 +283,6 @@ module.exports = {
 }
 
 var mat = matching_pennies();
-solve(mat);
+solve(mat, two);
 
 
