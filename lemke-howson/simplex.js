@@ -11,7 +11,9 @@ var m = A[0].length + n;
 var last_row = n - 1;
 var last_col = m;
 var zero = 0;
-
+/**
+ * Example according to: https://people.richland.edu/james/ictcm/2006/simplex.html
+ */
 console.log(simplex(matrix(A, b, cT)));
 
 /**
