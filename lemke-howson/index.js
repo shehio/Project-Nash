@@ -181,7 +181,50 @@ function makePivotingStep(matrix, p1s, ebVar) {
 }
 
 
-var matching_pennies = function () {
+function find_equilibrium(mat, p1s) {
+    if (p1s < zero || matrix.length <= p1s) {
+        throw ('Invalid number of strategies for player 1.');
+    }
+    first_column_numbers = new Array();
+    for (let i of range(zero, mat.length, one)) {
+        first_column_numbers.add(Math.abs(mat[i][zero]));
+    }
+    for (let i of range(zero, mat.length, one)) {
+        if (!(i in first_column_numbers)) {
+            throw ('Invalid indices in the first column of the tableaux.')
+        }
+    }
+
+    let probs = new Array(mat.length);
+
+    for (let i of range(zero, mat.length, one)) {
+        let strategy = Math.abs(mat[i][zero]);
+        let probability = mat[i][one];
+        if (strategy < 0 || probability < 0) {
+            eqs[strategy] = 0;
+        }
+        else {
+            eqs[strategy] = probability;
+        }
+    }
+
+    /**
+     *  subset and concat vertically.
+     *  @todo: move it to a separate function.
+     */
+
+    let a = eqs.slice(zero, p1s);
+    let b = eqs.slice(p1s, eqs.length);
+
+    let c = a.map(function (el, i) {
+        return el.concat(b[i]);
+    });
+
+    return c;
+}
+
+
+function matching_pennies() {
     var matrix = new Array();
     var arr = [new Payoff(1, -1), new Payoff(-1, 1)];
     matrix.push(arr);
