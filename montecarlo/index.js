@@ -46,9 +46,5 @@ function d1() {
 module.exports = {
     d1: d1,
     d2: d2,
-    run: run,
-    /**
-     *  not sure if it's a good practice.
-     */
-    Point: Point
+    run: run
 }
