@@ -114,10 +114,10 @@ function createTableaux(matrix) {
 
 }
 
-// 2 cols, and -1 to transfer ebVar from 1-based to 0-based
-var varToCol = (x) => Math.abs(x) + 2 - 1;
+// 2 cols, and -1 to transfer eb_var from 1-based to 0-based
+var var_to_col = (x) => Math.abs(x) + 2 - 1;
 
-var getRowNums = (x, p1s, matrix) => {
+function get_row_nums(x, p1s, matrix) {
     if (-p1s <= x < 0 || x > p1s) {
         return range(0, p1s);
     }
@@ -126,9 +126,10 @@ var getRowNums = (x, p1s, matrix) => {
         return range(p1s, matrix.length);
     }
 }
-function makePivotingStep(matrix, p1s, ebVar) {
+
+function make_pivoting_step(matrix, p1s, eb_var) {
     // if entering var is more or equal zero, or the entering is more than the rows.
-    if (Math.abs(ebVar) <= 0 || Math.abs(ebVar) > matrix.length) {
+    if (Math.abs(eb_var) <= 0 || Math.abs(eb_var) > matrix.length) {
         throw ('Selected variable index is invalid.');
     }
     // if player's one strategies are less than zero, or player's  one strategies are more than the rows
@@ -136,73 +137,74 @@ function makePivotingStep(matrix, p1s, ebVar) {
         throw ('Invalid number of strategies for player 1.');
     }
 
-    let lbVar = 0;
+    let lb_var = 0;
     let min = Infinity;
-    let rows = getRowNums(ebVar, p1s, matrix);
-    let col = varToCol(ebVar);
-    let lbVarCoeff = 0;
+    let rows = get_row_nums(eb_var, p1s, matrix);
+    let col = var_to_col(eb_var);
+    let lb_varCoeff = 0;
     for (let i of rows) {
         if (matrix[i][col] < 0) {
             let ratio = -matrix[i][1] / matrix[i][col];
             if (min > ratio) {
                 min = ratio;
-                lbVar = matrix[i][0];
-                lbVarRow = i;
-                lbVarCoeff = matrix[i][col];
+                lb_var = matrix[i][0];
+                lb_var_row = i;
+                lb_varCoeff = matrix[i][col];
             }
         }
     }
 
-    matrix[lbVarRow][zero] = ebVar;
-    matrix[lbVarRow][varToCol(ebVar)] = zero;
-    matrix[lbVarRow][varToCol(lbVar)] = -one;
+    matrix[lb_var_row][zero] = eb_var;
+    matrix[lb_var_row][var_to_col(eb_var)] = zero;
+    matrix[lb_var_row][var_to_col(lb_var)] = -one;
 
-    console.log(matrix);
+    // console.log(matrix);
     cols = range(1, matrix[0].length);
 
-    lbVarCoeff = Math.abs(lbVarCoeff);
+    lb_varCoeff = Math.abs(lb_varCoeff);
     for (let i of cols) {
-        matrix[lbVarRow][i] = matrix[lbVarRow][i] / lbVarCoeff;
+        matrix[lb_var_row][i] = matrix[lb_var_row][i] / lb_varCoeff;
     }
-    console.log(matrix);
+    // console.log(matrix);
 
     for (let i of rows) {
         if (matrix[i][col] != 0) {
             for (let j of range(1, matrix[0].length)) {
-                matrix[i][j] = matrix[i][j] + matrix[i][col] * matrix[lbVarRow][j];
+                matrix[i][j] = matrix[i][j] + matrix[i][col] * matrix[lb_var_row][j];
             }
             matrix[i][col] = 0;
         }
     }
-    console.log(matrix);
-    return lbVar;
+    // console.log(matrix);
+    return lb_var;
 }
 
-
-function find_equilibrium(mat, p1s) {
+/**
+ *  @todo: go through the code and figure the one-based zero-based inconsistency.
+ */
+function find_equilibrium(matrix, p1s) {
     if (p1s < zero || matrix.length <= p1s) {
         throw ('Invalid number of strategies for player 1.');
     }
     first_column_numbers = new Array();
-    for (let i of range(zero, mat.length, one)) {
-        first_column_numbers.add(Math.abs(mat[i][zero]));
+    for (let i of range(zero, matrix.length, one)) {
+        first_column_numbers.push(Math.abs(matrix[i][zero]));
     }
-    for (let i of range(zero, mat.length, one)) {
+    for (let i of range(zero, matrix.length, one)) {
         if (!(i in first_column_numbers)) {
             throw ('Invalid indices in the first column of the tableaux.')
         }
     }
-
-    let probs = new Array(mat.length);
-
-    for (let i of range(zero, mat.length, one)) {
-        let strategy = Math.abs(mat[i][zero]);
-        let probability = mat[i][one];
+    let eqs = new Array();
+    for (let i of range(zero, matrix.length, one)) {
+        let strategy = Math.abs(matrix[i][zero]);
+        let probability = matrix[i][one];
+        // normalizing for zero based again
         if (strategy < 0 || probability < 0) {
-            eqs[strategy] = 0;
+            eqs[strategy - one] = 0;
         }
         else {
-            eqs[strategy] = probability;
+            eqs[strategy - one] = probability;
         }
     }
 
@@ -213,9 +215,11 @@ function find_equilibrium(mat, p1s) {
 
     let a = eqs.slice(zero, p1s);
     let b = eqs.slice(p1s, eqs.length);
-
-    let c = a.map(function (el, i) {
-        return el.concat(b[i]);
+    let c = a.map(function (element, i) {
+        let arr = new Array();
+        arr.push(element);
+        // concat or push
+        return arr.concat(b[i]);
     });
 
     return c;
@@ -237,25 +241,25 @@ function normalize(arr) {
     return ret;
 }
 
-function normalize_equilibrium(mat) {
-    if (typeof mat === 'undefined') {
-        throw 'mat has to be defined.'
+function normalize_equilibrium(matrix) {
+    if (typeof matrix === 'undefined') {
+        throw 'matrix has to be defined.'
     }
-    let types = new Array(typeof mat[zero], typeof mat[one]);
+    let types = new Array(typeof matrix[zero], typeof matrix[one]);
     if ('undefined' in types) {
-        throw 'mat has empty probabilities.'
+        throw 'matrix has empty probabilities.'
     }
-    for (arr of mat) {
+    for (arr of matrix) {
         for (element of arr) {
             if (typeof element === 'number') {
                 continue;
             }
-            throw 'mat has non number probabilities.'
+            throw 'matrix has non number probabilities.'
         }
     }
     var ret = new Array();
-    ret.push(normalize(mat[zero]));
-    ret.push(normalize(mat[one]));
+    ret.push(normalize(matrix[zero]));
+    ret.push(normalize(matrix[one]));
     return ret;
 }
 function matching_pennies() {
@@ -268,21 +272,34 @@ function matching_pennies() {
 }
 
 
-function solve(mat, p1s) {
-    console.log(mat);
-    normalizeMatrices(mat);
-    console.log(mat);
-    mat = createTableaux(mat);
-    console.log(mat);
-    makePivotingStep(mat, p1s, one);
-    console.log(mat);
+function solve(matrix) {
+    // player's one strategies are the matrix rows.
+    let p1s = matrix.length;
+    let init_basis_var = one;
+    let compare = 0;
+    // console.log(matrix);
+    // console.log('-----------------------------');
+    normalizeMatrices(matrix);
+    // console.log(matrix[0]);
+    // console.log('-----------------------------');
+    // console.log(matrix[1]);
+    matrix = createTableaux(matrix);
+    // console.log(matrix);
+    let left_basis_var = make_pivoting_step(matrix, p1s, init_basis_var);
+    while (compare != init_basis_var) {
+        left_basis_var = make_pivoting_step(matrix, p1s, -left_basis_var);
+        compare = Math.abs(left_basis_var);
+    }
+    matrix = find_equilibrium(matrix);
+    matrix = normalize_equilibrium(matrix);
+    return matrix;
 }
 
 module.exports = {
     solve: solve
 }
 
-var mat = matching_pennies();
-solve(mat, two);
-
+var matrix = matching_pennies();
+matrix = solve(matrix, two);
+console.log(matrix);
 
