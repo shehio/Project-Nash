@@ -181,12 +181,6 @@ function makePivotingStep(matrix, p1s, ebVar) {
 }
 
 
-module.exports = {
-    normalizeMatrices: normalizeMatrices,
-    createTableaux: createTableaux
-}
-
-
 var matching_pennies = function () {
     var matrix = new Array();
     var arr = [new Payoff(1, -1), new Payoff(-1, 1)];
@@ -197,10 +191,20 @@ var matching_pennies = function () {
 }
 
 
-console.log(matching_pennies());
+function solve(mat) {
+    console.log(mat);
+    normalizeMatrices(mat);
+    console.log(mat);
+    mat = createTableaux(mat);
+    console.log(mat);
+    makePivotingStep(mat, 2, 1);
+}
+
+module.exports = {
+    solve: solve
+}
+
 var mat = matching_pennies();
-normalizeMatrices(mat);
-console.log(mat);
-mat = createTableaux(mat);
-console.log(mat);
-makePivotingStep(mat, 2, 1);
+solve(mat);
+
+
