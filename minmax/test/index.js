@@ -1,12 +1,12 @@
 'use strict;'
 const assert = require('assert');
 const expect = require('chai').expect;
-const classes = require('./../classes.js')
+const classes = require('./../../classes.js');
 const Payoff = classes.Payoff;
 const Pair = classes.Pair;
 const Node = classes.Node;
-const nash = require('./../index.js');
-const mm = require('./../minmax/index.js');
+const nash = require('./../../index.js');
+const mm = require('./../index.js');
 
 var example = function () {
     var node = new Node();

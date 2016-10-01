@@ -10,6 +10,9 @@ const two = 2;
  *  @todo: move this to a separate file.
  */
 function range(start, stop, step) {
+    if(arguments.length == 0) {
+        throw new Error('range function must have at least one arguement.')
+    }
     if (typeof stop == 'undefined') {
         // one param defined
         stop = start;
@@ -295,11 +298,24 @@ function solve(matrix) {
     return matrix;
 }
 
-module.exports = {
-    solve: solve
+// var matrix = matching_pennies();
+// matrix = solve(matrix);
+// console.log(matrix);
+
+var prisoners_dilemma = function () {
+    var matrix = new Array();
+    var arr = [new Payoff(-1, -1), new Payoff(-10, 0)];
+    matrix.push(arr);
+    arr = [new Payoff(0, -10), new Payoff(-5, -5)];
+    matrix.push(arr);
+    return matrix;
 }
 
-var matrix = matching_pennies();
-matrix = solve(matrix, two);
-console.log(matrix);
+// var matrix = prisoners_dilemma();
+// matrix = solve(matrix);
+// console.log(matrix);
 
+module.exports = {
+    solve: solve, 
+    range: range
+}
