@@ -50,8 +50,26 @@ function calculate_area(start, end, fx) {
 }
 
 console.log(calculate_area(0, 1, 'e ^ x'));
-console.log(calculate_area(0, Math.PI, 'cos(x) * cos(x)'));
-console.log(calculate_area(1, 2, '2 * x + 3 * x * x * x'));
+// console.log(calculate_area(0, Math.PI, 'cos(x) * cos(x)'));
+// console.log(calculate_area(1, 2, '2 * x + 3 * x * x * x'));
+
+let fun = (error, result) => {
+    if (error) {
+        throw error;
+    }
+    let ret = result[0].subpods[0].text.split('=');
+    ret = ret[ret.length - 1];
+    if (ret.indexOf('~~' > -1)) {
+        ret = ret.split('~~');
+        ret = ret[ret.length - 1];
+    }
+    return ret.trim();
+}
+
+
+var wolfram = require('wolfram-alpha').createClient('8XH567-3P7VK7U75K');
+
+wolfram.query("integrate e^x from 0 to 1", fun);
 
 module.exports = {
     calculate_area: calculate_area
