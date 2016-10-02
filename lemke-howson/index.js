@@ -42,7 +42,7 @@ function range(start, stop, step) {
  */
 function normalize_matrices(matrix) {
     if (!matrix || !matrix instanceof Array) {
-        throw "matrix is null, or not an array";
+        throw new Error('matrix is null, or not an array');
     }
     // find the lowest element
     let min = Infinity;
