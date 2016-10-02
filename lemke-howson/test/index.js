@@ -8,7 +8,7 @@ const Pair = classes.Pair;
 
 describe('range: ', () => {
     it('throws an exception on no arguements', (done) => {
-        expect(lh.range).to.throw('range function must have at least one arguement.');
+        assert.throws(function () { lh.range() }, Error, 'range function must have at least one arguement.');
         done();
     });
     it('works on a single arguement', (done) => {
@@ -40,8 +40,8 @@ describe('normalize matrix: ', () => {
     let zero = () => { return new Array(new Payoff(0, 0), new Payoff(0, 0), new Payoff(0, 0)); }
 
     let generate_matrix = (generator) => {
-        var matrix = new Array();
-        var arr = [new Payoff(1, 1), new Payoff(2, 2), new Payoff(3, 3)];
+        let matrix = new Array();
+        let arr = [new Payoff(1, 1), new Payoff(2, 2), new Payoff(3, 3)];
         matrix.push(arr);
         arr = generator();
         matrix.push(arr);
@@ -50,8 +50,8 @@ describe('normalize matrix: ', () => {
         return matrix;
     }
     let generate_expected_matrix = (start, i) => {
-        var matrix = new Array();
-        var arr = [new Payoff(1 + i, 1 + i), new Payoff(2 + i, 2 + i), new Payoff(3 + i, 3 + i)];
+        let matrix = new Array();
+        let arr = [new Payoff(1 + i, 1 + i), new Payoff(2 + i, 2 + i), new Payoff(3 + i, 3 + i)];
         matrix.push(arr);
         arr = [new Payoff(start + i, start + i), new Payoff(start + i, start + i), new Payoff(start + i, start + i)];
         matrix.push(arr);
@@ -80,7 +80,28 @@ describe('normalize matrix: ', () => {
         done();
     });
     it('throws an error on empty arguements', (done) => {
-        assert.throws(lh.normalize_matrices, Error, 'matrix is null, or not an array.');
+        assert.throws(function () { lh.normalize_matrices(); }, Error, 'matrix is null, or not an array.');
         done();
     });
+});
+
+
+describe('create tableau: ', () => {
+    it('works', (done) => {
+        let expected = [
+            [-1, 1, 0, 0, -2, 0],
+            [-2, 1, 0, 0, 0, -2],
+            [-3, 1, 0, -2, 0, 0],
+            [-4, 1, -2, 0, 0, 0]
+        ];
+        let intermediate = [
+            [new Payoff(2, 0), new Payoff(0, 2)],
+            [new Payoff(0, 2), new Payoff(2, 0)]
+        ];
+        let generated = lh.create_tableaux(intermediate);
+
+        expect(generated).to.be.eql(expected);
+        done();
+    });
+
 });

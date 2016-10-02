@@ -71,7 +71,7 @@ function normalize_matrices(matrix) {
     return ret;
 }
 
-function createTableaux(matrix) {
+function create_tableaux(matrix) {
     if (!matrix || !matrix instanceof Array) {
         throw new Error("matrix is null, or not an array.");
     }
@@ -106,8 +106,19 @@ function createTableaux(matrix) {
 
     for (let i = 0; i < matrix.length; i++) {
         for (let j = 0; j < matrix[0].length; j++) {
-            tableaux[i + p1s][j + two] = - matrix[i][j].y;
-            tableaux[i][j + two + p2s] = - matrix[i][j].x;
+            // avoiding negative zeros, that's failing the tests.
+            if (matrix[i][j].y == 0) {
+                tableaux[i + p1s][j + two] = 0;
+            }
+            else {
+                tableaux[i + p1s][j + two] = - matrix[i][j].y;
+            }
+            if (matrix[i][j].x == 0) {
+                tableaux[i][j + two + p2s] = 0;
+            }
+            else {
+                tableaux[i][j + two + p2s] = - matrix[i][j].x;
+            }
         }
     }
     return tableaux;
@@ -283,7 +294,7 @@ function solve(matrix) {
     // console.log(matrix[0]);
     // console.log('-----------------------------');
     // console.log(matrix[1]);
-    matrix = createTableaux(matrix);
+    matrix = create_tableaux(matrix);
     // console.log(matrix);
     let left_basis_var = make_pivoting_step(matrix, p1s, init_basis_var);
     while (compare != init_basis_var) {
@@ -315,5 +326,6 @@ var prisoners_dilemma = function () {
 module.exports = {
     solve: solve,
     range: range,
-    normalize_matrices: normalize_matrices
+    normalize_matrices: normalize_matrices,
+    create_tableaux: create_tableaux
 }

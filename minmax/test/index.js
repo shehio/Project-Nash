@@ -7,6 +7,7 @@ const Pair = classes.Pair;
 const Node = classes.Node;
 const nash = require('./../../index.js');
 const mm = require('./../index.js');
+const one = 1;
 
 var example = function () {
     var node = new Node();
@@ -32,13 +33,13 @@ var another_example = function () {
 describe('minmax: ', () => {
     it('works', (done) => {
         node = example();
-        console.log(mm.minmax(node, 1));
+        console.log(mm.minmax(node, one));
         done();
     });
 
     it('works again', (done) => {
         node = another_example();
-        console.log(mm.minmax(node, 1));
+        console.log(mm.minmax(node, one));
         done();
     });
 });
