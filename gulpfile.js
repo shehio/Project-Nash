@@ -1,7 +1,10 @@
-var gulp = require('gulp');
-var mocha = require('gulp-mocha');
+const gulp = require('gulp');
+const mocha = require('gulp-mocha');
+const jshint = require('gulp-jshint');
 
-gulp.task('default', () => {
+gulp.task('default', ['jshint', 'test'], function () { });
+
+gulp.task('test', () => {
     let sources = [
         './test/*.js',
         './finance//test/*.js',
@@ -14,4 +17,10 @@ gulp.task('default', () => {
             reporter: 'spec',
             globals: {}
         }));
+});
+
+gulp.task('jshint', () => {
+    return gulp.src('./*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'));
 });
