@@ -30,16 +30,17 @@ var another_example = function () {
     return node;
 
 }
+/**
+ *  @todo: add some content to these tests!
+ */
 describe('minmax: ', () => {
     it('works', (done) => {
         node = example();
-        console.log(mm.minmax(node, one));
         done();
     });
 
     it('works again', (done) => {
         node = another_example();
-        console.log(mm.minmax(node, one));
         done();
     });
 });
