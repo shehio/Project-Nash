@@ -1,11 +1,17 @@
-const mc = require('./index.js');
-
+const classes = require('./../../classes.js')
+const Payoff = classes.Payoff;
+const Point = classes.Pair;
+const mc = require('./../index.js');
+const zero = 0;
+const one = 1;
+const two = 2;
+const thousand = 1000;
 function check_inside(point) {
     if (point === undefined || point === null) {
-        throw "point is null, or undefined";
+        throw new Error('point is null, or undefined');
     }
     var radius = 1;
-    var center = new mc.Point(1, 1);
+    var center = new Point(1, 1);
     xc = center.x;
     yc = center.y;
     var x = point.x;
@@ -16,11 +22,11 @@ function check_inside(point) {
     return 0;
 }
 
-function calculate_radius(){
-    let sample_number = 100000;
-    let generator = mc.d2;
+function calculate_radius() {
+    let sample_number = 100 * thousand;
+    let generator = mc.d2(zero,one,zero,one);
     let estimator_function = check_inside;
-    let area_of_square = 2 * 2;
+    let area_of_square = two * two;
     return mc.run(sample_number, generator, estimator_function) * area_of_square;
 }
 

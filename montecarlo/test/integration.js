@@ -3,7 +3,7 @@
  *  As done in calculating pi, we drop random points, and find the ratio of points that were really under the curve over
  *  the total points, and by multiplying it to an already known area, we thus get the area under the curve.
  */
-const mc = require('./index.js');
+const mc = require('./../index.js');
 const math = require('mathjs');
 const thousand = 1000;
 const zero = 0;

@@ -1,17 +1,16 @@
 'use strict;'
 const assert = require('assert');
 const expect = require('chai').expect;
-const classes = require('./../classes.js')
+const classes = require('./../classes.js');
 const Payoff = classes.Payoff;
-const Pair = classes.Pair;
 const nash = require('./../index.js');
 
 var example = function () {
-    var matrix = new Array();
-    var arr = [new Payoff(3, -3), new Payoff(-2, 2)];
-    matrix.push(arr);
-    arr = [new Payoff(-1, 1), new Payoff(0, 0)];
-    matrix.push(arr);
+    let matrix = 
+    [
+        [new Payoff(3, -3), new Payoff(-2, 2)],
+        [new Payoff(-1, 1), new Payoff(0, 0)]
+    ];
     return matrix;
 }
 

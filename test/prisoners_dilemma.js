@@ -7,11 +7,11 @@ const Pair = classes.Pair;
 const nash = require('./../index.js');
 
 var prisoners_dilemma = function () {
-    var matrix = new Array();
-    var arr = [new Payoff(-1, -1), new Payoff(-10, 0)];
-    matrix.push(arr);
-    arr = [new Payoff(0, -10), new Payoff(-5, -5)];
-    matrix.push(arr);
+    let matrix =
+        [
+            [new Payoff(-1, -1), new Payoff(-10, 0)],
+            [new Payoff(0, -10), new Payoff(-5, -5)]
+        ];
     return matrix;
 }
 
