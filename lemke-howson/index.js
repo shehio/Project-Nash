@@ -138,6 +138,10 @@ function get_row_nums(x, p1s, matrix) {
     }
 }
 
+/**
+ *  @todo: change this to return the modified matrix as well!
+ *  Remember immutability.
+ */
 function make_pivoting_step(matrix, p1s, eb_var) {
     // if entering var is more or equal zero, or the entering is more than the rows.
     if (Math.abs(eb_var) <= 0 || Math.abs(eb_var) > matrix.length) {
@@ -327,5 +331,6 @@ module.exports = {
     solve: solve,
     range: range,
     normalize_matrices: normalize_matrices,
-    create_tableaux: create_tableaux
+    create_tableaux: create_tableaux,
+    make_pivoting_step: make_pivoting_step
 }
