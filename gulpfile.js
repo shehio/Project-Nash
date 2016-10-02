@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const mocha = require('gulp-mocha');
 const jshint = require('gulp-jshint');
-
+const todos = require('./todos.js');
 /**
  *  all directories for watching, and code quality.
  */
@@ -41,3 +41,6 @@ gulp.task('test', ['jshint'], () => {
             globals: {}
         }));
 });
+gulp.task('todos', () => {
+    return todos;
+})

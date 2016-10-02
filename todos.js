@@ -18,7 +18,7 @@ var walk = function (dir, ignore) {
 }
 
 
-files = walk('.', new Array('.git', '.gitignore', 'LICENSE',  'node_modules', 'package.json',  'todos.js'));
+files = walk('.', new Array('.git', '.gitignore', 'LICENSE', 'node_modules', 'package.json', 'todos.js'));
 /**
  *  Assumption as a future practce to end a todo with a full stop (period).
  */
@@ -27,7 +27,16 @@ files.forEach((file) => {
         let start = content.indexOf("@todo");
         while (start > -1) {
             content = content.substring(start);
-            let end = content.indexOf('.');
+            let end = 0;
+            if (content.indexOf('!') > -1) {
+                end = content.indexOf('!');
+            }
+            else if (content.indexOf('.')) {
+                end = content.indexOf('.');
+            }
+            else {
+                break;
+            }
             console.log(`${file}: ${content.substring(0, end + 1)}`);
             content = content.substring(end);
             start = content.indexOf("@todo");
