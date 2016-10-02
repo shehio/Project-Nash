@@ -113,5 +113,32 @@ describe('create tableau: ', () => {
         expect(generated).to.be.eql(expected);
         done();
     });
+});
+
+describe(' make pivoting step: ', () => {
+    it('throws an error on empty arguements', (done) => {
+        assert.throws(function () { lh.create_tableaux(); }, Error, 'matrix is null, or not an array.');
+        done();
+    });
+    it('throws an error on non array arguements', (done) => {
+        assert.throws(function () { lh.create_tableaux(zero); }, Error, 'matrix is null, or not an array.');
+        done();
+    });
+    it('works', (done) => {
+        let expected = [
+            [-1, 1, 0, 0, -2, 0],
+            [-2, 1, 0, 0, 0, -2],
+            [-3, 1, 0, -2, 0, 0],
+            [-4, 1, -2, 0, 0, 0]
+        ];
+        let intermediate = [
+            [new Payoff(2, 0), new Payoff(0, 2)],
+            [new Payoff(0, 2), new Payoff(2, 0)]
+        ];
+        let generated = lh.create_tableaux(intermediate);
+
+        expect(generated).to.be.eql(expected);
+        done();
+    });
 
 });

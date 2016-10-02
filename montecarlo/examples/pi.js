@@ -10,16 +10,16 @@ function check_inside(point) {
     if (point === undefined || point === null) {
         throw new Error('point is null, or undefined');
     }
-    var radius = 1;
-    var center = new Point(1, 1);
+    var radius = one;
+    var center = new Point(one, one);
     xc = center.x;
     yc = center.y;
     var x = point.x;
     var y = point.y;
     if ((x - xc) * (x - xc) + (y - yc) * (y - yc) < radius * radius) {
-        return 1;
+        return one;
     }
-    return 0;
+    return zero;
 }
 
 function calculate_radius() {

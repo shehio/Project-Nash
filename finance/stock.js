@@ -1,0 +1,1 @@
+./../montecarlo/examples/stock.js
