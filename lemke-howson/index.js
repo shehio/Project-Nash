@@ -10,7 +10,7 @@ const two = 2;
  *  @todo: move this to a separate file.
  */
 function range(start, stop, step) {
-    if(arguments.length == 0) {
+    if (arguments.length == 0) {
         throw new Error('range function must have at least one arguement.')
     }
     if (typeof stop == 'undefined') {
@@ -35,19 +35,15 @@ function range(start, stop, step) {
     return result;
 }
 
-/**
- *  I rarely use mutuable objects, as they are not needed in these cases.
- *  FYI, can overflow.
- */
+
 /**
  *  @todo: embed methods to prevent user directly access x, and y (fields) [Design of API].
+ * FYI, can overflow.
  */
-function normalizeMatrices(matrix) {
-
+function normalize_matrices(matrix) {
     if (!matrix || !matrix instanceof Array) {
         throw "matrix is null, or not an array";
     }
-
     // find the lowest element
     let min = Infinity;
     for (let i = 0; i < matrix.length; i++) {
@@ -58,28 +54,29 @@ function normalizeMatrices(matrix) {
     /**
      *  @todo: change this.
      */
-    if (min < 0) {
+    if (min <= 0) {
         min = - min + 1;
     }
     else {
-        return;
+        return matrix;
     }
-
+    let ret = new Array();
     for (let i = 0; i < matrix.length; i++) {
+        let arr = new Array();
         for (let j = 0; j < matrix[i].length; ++j) {
-            matrix[i][j].x = matrix[i][j].x + min;
-            matrix[i][j].y = matrix[i][j].y + min;
+            arr.push(new Payoff(matrix[i][j].x + min, matrix[i][j].y + min));
         }
+        ret.push(arr);
     }
+    return ret;
 }
-
 
 function createTableaux(matrix) {
     if (!matrix || !matrix instanceof Array) {
-        throw "matrix is null, or not an array.";
+        throw new Error("matrix is null, or not an array.");
     }
     if (matrix.length == 0) {
-        throw "matrix is empty."
+        throw new Error("matrix is empty.");
     }
     /**
      *  Assume the matrix is 'regular', and now it's safe to check that after prior checks.
@@ -282,7 +279,7 @@ function solve(matrix) {
     let compare = 0;
     // console.log(matrix);
     // console.log('-----------------------------');
-    normalizeMatrices(matrix);
+    matrix = normalize_matrices(matrix);
     // console.log(matrix[0]);
     // console.log('-----------------------------');
     // console.log(matrix[1]);
@@ -316,6 +313,7 @@ var prisoners_dilemma = function () {
 // console.log(matrix);
 
 module.exports = {
-    solve: solve, 
-    range: range
+    solve: solve,
+    range: range,
+    normalize_matrices: normalize_matrices
 }
