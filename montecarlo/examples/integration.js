@@ -67,7 +67,7 @@ let fun = (error, result) => {
 }
 
 
-var wolfram = require('wolfram-alpha').createClient('8XH567-3P7VK7U75K');
+var wolfram = require('wolfram-alpha').createClient('XXXXX');
 
 wolfram.query("integrate e^x from 0 to 1", fun);
 

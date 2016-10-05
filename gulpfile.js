@@ -21,7 +21,10 @@ const tests = [
     './minmax/test/*.js',
     './montecarlo/test/*.js'
 ];
-gulp.task('default', ['jshint', 'test'], () => {
+
+gulp.task('default', ['jshint', 'test'], () => { });
+
+gulp.task('watch', () => {
     gulp.watch(sources, () => {
         gulp.run('jshint');
         gulp.run('test');
@@ -41,6 +44,7 @@ gulp.task('test', ['jshint'], () => {
             globals: {}
         }));
 });
+
 gulp.task('todos', () => {
     return todos;
 })
