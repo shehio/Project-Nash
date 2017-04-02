@@ -7,99 +7,119 @@ const one = 1;
 const two = 2;
 
 /**
- *  @todo: move this to a separate file.
- */
-function range(start, stop, step) {
-    if (arguments.length == 0) {
+* returns an array of (stop - start) / step numbers
+* from the start to the stop with moving one step at a time.
+*
+* @todo: move this to a separate file.
+*/
+function range(start, stop, step)
+{
+    if (arguments.length == 0)
+    {
         throw new Error('range function must have at least one arguement.')
     }
-    if (typeof stop == 'undefined') {
-        // one param defined
+
+    // one param defined
+    if (typeof stop == 'undefined')
+    {
         stop = start;
         start = 0;
     }
 
-    if (typeof step == 'undefined') {
+    if (typeof step == 'undefined')
+    {
         step = 1;
     }
 
-    if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
+    if ((step > 0 && start >= stop) || (step < 0 && start <= stop))
+    {
         return [];
     }
 
     var result = [];
-    for (var i = start; step > 0 ? i < stop : i > stop; i += step) {
+    for (var i = start; step > 0 ? i < stop : i > stop; i += step)
+    {
         result.push(i);
     }
 
     return result;
 }
 
-
 /**
- *  @todo: embed methods to prevent user directly access x, and y (fields) [Design of API].
- * FYI, can overflow.
- */
-function normalize_matrices(matrix) {
-    if (!matrix || !matrix instanceof Array) {
-        throw new Error('matrix is null, or not an array');
+*  @todo: embed methods to prevent user directly access x, and y (fields) [Design of API].
+*  FYI, can overflow.
+*/
+function normalize_matrices(matrix)
+{
+    if (!matrix)
+    {
+        throw new Error('matrix is null');
     }
+    
     // find the lowest element
     let min = Infinity;
-    for (let i = 0; i < matrix.length; i++) {
-        for (let j = 0; j < matrix[i].length; ++j) {
+
+    for (let i = 0; i < matrix.length; i++)
+    {
+        for (let j = 0; j < matrix[i].length; ++j)
+        {
             min = Math.min(matrix[i][j].x, matrix[i][j].y, min);
         }
     }
-    /**
-     *  @todo: change this.
-     */
-    if (min <= 0) {
-        min = - min + 1;
-    }
-    else {
+    
+    if (min > 0)
+    {
         return matrix;
     }
+
+    min = - min + 1;
     let ret = new Array();
-    for (let i = 0; i < matrix.length; i++) {
+
+    for (let i = 0; i < matrix.length; i++)
+    {
         let arr = new Array();
-        for (let j = 0; j < matrix[i].length; ++j) {
+
+        for (let j = 0; j < matrix[i].length; ++j)
+        {
             arr.push(new Payoff(matrix[i][j].x + min, matrix[i][j].y + min));
         }
+
         ret.push(arr);
     }
+
     return ret;
 }
 
-function create_tableaux(matrix) {
-    if (!matrix || !matrix instanceof Array) {
-        throw new Error("matrix is null, or not an array.");
+function create_tableaux(matrix)
+{
+    if (!matrix) {
+        throw new Error("matrix is null");
     }
+
     if (matrix.length == 0) {
         throw new Error("matrix is empty.");
     }
-    /**
-     *  Assume the matrix is 'regular', and now it's safe to check that after prior checks.
-     */
-    let strategies = matrix.length + matrix[0].length;
+
     let p1s = matrix.length;
     let p2s = matrix[0].length;
+    let strategies = p1s + p2s;
+
     /**
-     *  Should have an (s) by (s + 2) matrix (two more columns)
-     */
+    *  Should have an (s) by (s + 2) matrix
+    */
     let tableaux = new Array(strategies);
     for (let i = 0; i < tableaux.length; i++) {
         tableaux[i] = Array.apply(null, Array(strategies + 2)).map(Number.prototype.valueOf, 0);
     }
     /**
-     * 
-     */
+    *
+    */
     for (let i = 0; i < tableaux.length; i++) {
         tableaux[i][zero] = - (i + 1);
     }
     /**
-     * 
-     */
+    *
+    */
     for (let i = 0; i < tableaux.length; i++) {
         tableaux[i][one] = 1;
     }
@@ -139,9 +159,9 @@ function get_row_nums(x, p1s, matrix) {
 }
 
 /**
- *  @todo: change this to return the modified matrix as well!
- *  Remember immutability.
- */
+*  @todo: change this to return the modified matrix as well!
+*  Remember immutability.
+*/
 function make_pivoting_step(matrix, p1s, eb_var) {
     // if entering var is more or equal zero, or the entering is more than the rows.
     if (Math.abs(eb_var) <= 0 || Math.abs(eb_var) > matrix.length) {
@@ -195,8 +215,8 @@ function make_pivoting_step(matrix, p1s, eb_var) {
 }
 
 /**
- *  @todo: go through the code and figure the one-based zero-based inconsistency.
- */
+*  @todo: go through the code and figure the one-based zero-based inconsistency.
+*/
 function find_equilibrium(matrix, p1s) {
     if (p1s < zero || matrix.length <= p1s) {
         throw ('Invalid number of strategies for player 1.');
@@ -224,9 +244,9 @@ function find_equilibrium(matrix, p1s) {
     }
 
     /**
-     *  subset and concat vertically.
-     *  @todo: move it to a separate function.
-     */
+    *  subset and concat vertically.
+    *  @todo: move it to a separate function.
+    */
 
     let a = eqs.slice(zero, p1s);
     let b = eqs.slice(p1s, eqs.length);
