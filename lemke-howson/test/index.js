@@ -260,3 +260,25 @@ describe(' find equilibrium: ', () => {
         done();
     });
 });
+
+describe(' normalize equilibrium: ', () => {
+    it('works', (done) => {
+        let matrix = 
+        [
+            [2/5, 1/5, 4/15],
+            [1/10, 3/10, 1/2]
+        ];
+        let expected = 
+        [
+            [6/13, 3/13, 0.30769230769230765],
+            [0.11111111111111112, 3/9, 5/9   ]
+        ];
+        let actual = lh.normalize_equilibrium(matrix);
+        expect(actual).to.be.eql(expected);
+        done();
+    });
+
+    it('works again', (done) => {
+        done();
+    });
+});
