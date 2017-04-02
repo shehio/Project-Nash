@@ -220,6 +220,21 @@ describe(' make pivoting step: ', () => {
 
 describe(' find equilibrium: ', () => {
     it('works', (done) => {
+        let matrix = 
+        [
+            [3, 1/3, 0, 0, 0, 0],
+            [4, 2/3, 0, 0, 0, 0],
+            [1, 3/4, 0, 0, 0, 0],
+            [2, 1/4, 0, 0, 0, 0]
+        ];
+        let expected = 
+        [
+            [ 0.75, 0.3333333333333333],
+            [ 0.25, 0.6666666666666666]
+        ];
+        let p1s = 2;
+        let actual = lh.find_equilibrium(matrix, p1s);
+        expect(actual).to.be.eql(expected);
         done();
     });
 });

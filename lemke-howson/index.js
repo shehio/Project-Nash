@@ -376,5 +376,6 @@ module.exports = {
     range: range,
     normalize_matrices: normalize_matrices,
     create_tableaux: create_tableaux,
-    make_pivoting_step: make_pivoting_step
+    make_pivoting_step: make_pivoting_step,
+    find_equilibrium: find_equilibrium
 }
