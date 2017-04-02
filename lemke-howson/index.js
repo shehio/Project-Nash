@@ -243,9 +243,6 @@ function make_pivoting_step(matrix, p1s, eb_var)
     return lb_var;
 }
 
-/**
-*  @todo: go through the code and figure the one-based zero-based inconsistency.
-*/
 function find_equilibrium(matrix, p1s) {
     if (p1s < zero || matrix.length <= p1s) {
         throw ('Invalid number of strategies for player 1.');
@@ -276,13 +273,11 @@ function find_equilibrium(matrix, p1s) {
     *  subset and concat vertically.
     *  @todo: move it to a separate function.
     */
-
     let a = eqs.slice(zero, p1s);
     let b = eqs.slice(p1s, eqs.length);
     let c = a.map(function (element, i) {
         let arr = new Array();
         arr.push(element);
-        // concat or push
         return arr.concat(b[i]);
     });
 
@@ -377,5 +372,6 @@ module.exports = {
     normalize_matrices: normalize_matrices,
     create_tableaux: create_tableaux,
     make_pivoting_step: make_pivoting_step,
-    find_equilibrium: find_equilibrium
+    find_equilibrium: find_equilibrium,
+    normalize_equilibrium: normalize_equilibrium
 }

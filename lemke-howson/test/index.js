@@ -237,4 +237,26 @@ describe(' find equilibrium: ', () => {
         expect(actual).to.be.eql(expected);
         done();
     });
+
+    it('works again', (done) => {
+        let matrix = 
+        [
+            [5, 3/10, 0, 0, 0, 0],
+            [6, 1/2, 0, 0, 0, 0 ],
+            [4, 1/10, 0, 0, 0, 0],
+            [1, 2/5, 0, 0, 0, 0 ],
+            [2, 1/5, 0, 0, 0, 0 ],
+            [3, 4/15, 0, 0, 0, 0]
+        ];
+        let expected = 
+        [
+            [2/5, 1/10],
+            [1/5, 3/10],
+            [4/15, 1/2]
+        ];
+        let p1s = 3;
+        let actual = lh.find_equilibrium(matrix, p1s);
+        expect(actual).to.be.eql(expected);
+        done();
+    });
 });
