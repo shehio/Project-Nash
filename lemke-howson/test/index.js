@@ -98,19 +98,41 @@ describe('create tableau: ', () => {
         done();
     });
     it('works', (done) => {
-        let expected = [
+        let expected = 
+        [
             [-1, 1, 0, 0, -2, 0],
             [-2, 1, 0, 0, 0, -2],
             [-3, 1, 0, -2, 0, 0],
             [-4, 1, -2, 0, 0, 0]
         ];
-        let intermediate = [
+        let intermediate = 
+        [
             [new Payoff(2, 0), new Payoff(0, 2)],
             [new Payoff(0, 2), new Payoff(2, 0)]
         ];
         let generated = lh.create_tableaux(intermediate);
-
         expect(generated).to.be.eql(expected);
+        done();
+    });
+    it('works again', (done) => {
+        let expected = 
+        [
+            [-1, 1, 0, 0, 0, -1, -3, 0 ],
+            [-2, 1, 0, 0, 0, 0, 0, -2  ],
+            [-3, 1, 0, 0, 0, -2, -1, -1],
+            [-4, 1, -2, -1, 0, 0, 0, 0 ],
+            [-5, 1, -1, -3, 0, 0, 0, 0 ],
+            [-6, 1, 0, -1, -3, 0, 0, 0 ]
+        ];
+        let intermediate = 
+        [
+            [new Payoff(1, 2), new Payoff(3, 1), new Payoff(0,0)],
+            [new Payoff(0, 1), new Payoff(0, 3), new Payoff(2,1)],
+            [new Payoff(2, 0), new Payoff(1, 0), new Payoff(1,3)]
+        ];
+        let generated = lh.create_tableaux(intermediate);
+        console.log(generated);
+        // expect(generated).to.be.eql(expected);
         done();
     });
 });

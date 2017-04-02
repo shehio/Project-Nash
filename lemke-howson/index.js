@@ -90,6 +90,15 @@ function normalize_matrices(matrix)
     return ret;
 }
 
+let intermediate = 
+        [
+            [new Payoff(1, 2), new Payoff(3, 1), new Payoff(0,0)],
+            [new Payoff(0, 1), new Payoff(0, 3), new Payoff(2,1)],
+            [new Payoff(2, 0), new Payoff(1, 0), new Payoff(1,3)]
+        ];
+
+create_tableaux(intermediate);
+
 function create_tableaux(matrix)
 {
     if (!matrix) {
@@ -108,38 +117,49 @@ function create_tableaux(matrix)
     *  Should have an (s) by (s + 2) matrix
     */
     let tableaux = new Array(strategies);
-    for (let i = 0; i < tableaux.length; i++) {
+    
+    // initialize every row: an array of (S+2) zeros
+    for (let i = 0; i < tableaux.length; i++) 
+    {
         tableaux[i] = Array.apply(null, Array(strategies + 2)).map(Number.prototype.valueOf, 0);
     }
-    /**
-    *
-    */
-    for (let i = 0; i < tableaux.length; i++) {
+
+    // indexing every column by it's negative index
+    for (let i = 0; i < tableaux.length; i++) 
+    {
         tableaux[i][zero] = - (i + 1);
     }
-    /**
-    *
-    */
+    
+    // second column should all be ones
     for (let i = 0; i < tableaux.length; i++) {
-        tableaux[i][one] = 1;
+        tableaux[i][one] = one;
     }
 
-    for (let i = 0; i < matrix.length; i++) {
-        for (let j = 0; j < matrix[0].length; j++) {
-            // avoiding negative zeros, that's failing the tests.
-            if (matrix[i][j].y == 0) {
-                tableaux[i + p1s][j + two] = 0;
+    console.log(matrix);
+    for (let i = 0; i < matrix.length; i++) 
+    {
+        for (let j = 0; j < matrix[0].length; j++) 
+        {
+            // avoiding negative zeros, it was failing the tests.
+            if (matrix[i][j].y == 0) 
+            {
+                tableaux[j + p1s][i + two] = 0;
             }
-            else {
-                tableaux[i + p1s][j + two] = - matrix[i][j].y;
+            else
+            {
+                tableaux[j + p1s][i + two] = - matrix[i][j].y;
             }
-            if (matrix[i][j].x == 0) {
-                tableaux[i][j + two + p2s] = 0;
+
+            if (matrix[i][j].x == 0) 
+            {
+                tableaux[i][j + two + p1s] = 0;
             }
-            else {
-                tableaux[i][j + two + p2s] = - matrix[i][j].x;
+            else 
+            {
+                tableaux[i][j + two + p1s] = - matrix[i][j].x;
             }
         }
+        console.log(tableaux);
     }
     return tableaux;
 
