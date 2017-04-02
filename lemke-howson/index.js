@@ -131,11 +131,11 @@ function create_tableaux(matrix)
     }
     
     // second column should all be ones
-    for (let i = 0; i < tableaux.length; i++) {
+    for (let i = 0; i < tableaux.length; i++) 
+    {
         tableaux[i][one] = one;
     }
 
-    console.log(matrix);
     for (let i = 0; i < matrix.length; i++) 
     {
         for (let j = 0; j < matrix[0].length; j++) 
@@ -159,7 +159,6 @@ function create_tableaux(matrix)
                 tableaux[i][j + two + p1s] = - matrix[i][j].x;
             }
         }
-        console.log(tableaux);
     }
     return tableaux;
 
@@ -168,12 +167,15 @@ function create_tableaux(matrix)
 // 2 cols, and -1 to transfer eb_var from 1-based to 0-based
 var var_to_col = (x) => Math.abs(x) + 2 - 1;
 
-function get_row_nums(x, p1s, matrix) {
-    if (-p1s <= x < 0 || x > p1s) {
+function get_row_nums(x, p1s, matrix) 
+{
+    if (-p1s <= x < 0 || x > p1s) 
+    {
         return range(0, p1s);
     }
     //if it's negative and less, or positive and less. or equals.
-    else {
+    else 
+    {
         return range(p1s, matrix.length);
     }
 }
@@ -200,8 +202,10 @@ function make_pivoting_step(matrix, p1s, eb_var)
     let rows = get_row_nums(eb_var, p1s, matrix);
     let col = var_to_col(eb_var);
     let lb_varCoeff = 0;
-    for (let i of rows) {
-        if (matrix[i][col] < 0) {
+    for (let i of rows)
+    {
+        if (matrix[i][col] < 0) 
+        {
             let ratio = -matrix[i][1] / matrix[i][col];
             if (min > ratio) {
                 min = ratio;
@@ -216,24 +220,26 @@ function make_pivoting_step(matrix, p1s, eb_var)
     matrix[lb_var_row][var_to_col(eb_var)] = zero;
     matrix[lb_var_row][var_to_col(lb_var)] = -one;
 
-    // console.log(matrix);
     cols = range(1, matrix[0].length);
-
     lb_varCoeff = Math.abs(lb_varCoeff);
-    for (let i of cols) {
+
+    for (let i of cols) 
+    {
         matrix[lb_var_row][i] = matrix[lb_var_row][i] / lb_varCoeff;
     }
-    // console.log(matrix);
 
-    for (let i of rows) {
-        if (matrix[i][col] != 0) {
-            for (let j of range(1, matrix[0].length)) {
+    for (let i of rows) 
+    {
+        if (matrix[i][col] != 0) 
+        {
+            for (let j of range(1, matrix[0].length)) 
+            {
                 matrix[i][j] = matrix[i][j] + matrix[i][col] * matrix[lb_var_row][j];
             }
             matrix[i][col] = 0;
         }
     }
-    // console.log(matrix);
+
     return lb_var;
 }
 
@@ -320,6 +326,7 @@ function normalize_equilibrium(matrix) {
     ret.push(normalize(matrix[one]));
     return ret;
 }
+
 function matching_pennies() {
     var matrix = new Array();
     var arr = [new Payoff(1, -1), new Payoff(-1, 1)];
@@ -330,32 +337,26 @@ function matching_pennies() {
 }
 
 
-function solve(matrix) {
-    // player's one strategies are the matrix rows.
+function solve(matrix) 
+{
     let p1s = matrix.length;
     let init_basis_var = one;
     let compare = 0;
-    // console.log(matrix);
-    // console.log('-----------------------------');
+
     matrix = normalize_matrices(matrix);
-    // console.log(matrix[0]);
-    // console.log('-----------------------------');
-    // console.log(matrix[1]);
     matrix = create_tableaux(matrix);
-    // console.log(matrix);
     let left_basis_var = make_pivoting_step(matrix, p1s, init_basis_var);
-    while (compare != init_basis_var) {
+
+    while (compare != init_basis_var) 
+    {
         left_basis_var = make_pivoting_step(matrix, p1s, -left_basis_var);
         compare = Math.abs(left_basis_var);
     }
+
     matrix = find_equilibrium(matrix);
     matrix = normalize_equilibrium(matrix);
     return matrix;
 }
-
-// var matrix = matching_pennies();
-// matrix = solve(matrix);
-// console.log(matrix);
 
 var prisoners_dilemma = function () {
     var matrix = new Array();
@@ -366,9 +367,9 @@ var prisoners_dilemma = function () {
     return matrix;
 }
 
-// var matrix = prisoners_dilemma();
-// matrix = solve(matrix);
-// console.log(matrix);
+var matrix = matching_pennies();
+matrix = solve(matrix);
+console.log(matrix);
 
 module.exports = {
     solve: solve,

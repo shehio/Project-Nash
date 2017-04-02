@@ -216,5 +216,10 @@ describe(' make pivoting step: ', () => {
 
         done();
     });
+});
 
+describe(' find equilibrium: ', () => {
+    it('works', (done) => {
+        done();
+    });
 });
