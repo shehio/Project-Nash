@@ -182,13 +182,16 @@ function get_row_nums(x, p1s, matrix) {
 *  @todo: change this to return the modified matrix as well!
 *  Remember immutability.
 */
-function make_pivoting_step(matrix, p1s, eb_var) {
+function make_pivoting_step(matrix, p1s, eb_var) 
+{
     // if entering var is more or equal zero, or the entering is more than the rows.
-    if (Math.abs(eb_var) <= 0 || Math.abs(eb_var) > matrix.length) {
+    if (Math.abs(eb_var) <= 0 || Math.abs(eb_var) > matrix.length)
+    {
         throw ('Selected variable index is invalid.');
     }
     // if player's one strategies are less than zero, or player's  one strategies are more than the rows
-    if (p1s < 0 || matrix.length <= p1s) {
+    if (p1s < 0 || matrix.length <= p1s) 
+    {
         throw ('Invalid number of strategies for player 1.');
     }
 

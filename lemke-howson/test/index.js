@@ -131,8 +131,7 @@ describe('create tableau: ', () => {
             [new Payoff(2, 0), new Payoff(1, 0), new Payoff(1,3)]
         ];
         let generated = lh.create_tableaux(intermediate);
-        console.log(generated);
-        // expect(generated).to.be.eql(expected);
+        expect(generated).to.be.eql(expected);
         done();
     });
 });
@@ -165,22 +164,51 @@ describe(' make pivoting step: ', () => {
      *  @todo: find a way to test the percision without being explicit about it!
      */
     it('works again', (done) => {
-        let entering = [
+        let entering = 
+        [
             [-1, 1, 0, 0, -3, -1],
             [-2, 1, 0, 0, -1, -3],
             [-3, 1, -1, -3, 0, 0],
             [-4, 1, -3, -1, 0, 0]
-        ]
+        ];
         // 0.6666666666666667 instead of 2/3 
-        let expected_matrix = [
+        let expected_matrix = 
+        [
             [-1, 1, 0, 0, -3, -1],
             [-2, 1, 0, 0, -1, -3],
             [-3, 0.6666666666666667 , 0, -8 / 3, 0 / 1, 1 / 3],
             [1, 1 / 3, 0 / 1, -1 / 3, 0 / 1, -1 / 3]
-        ]
+        ];
         let eb_var = 1;
         let p1s = 2;
         let expected_lb = -4;
+
+        let actual = lh.make_pivoting_step(entering, p1s, eb_var);
+        expect(entering).to.be.eql(expected_matrix);
+        expect(actual).to.be.eql(expected_lb);
+
+        done();
+    });
+
+    it("works thrice", (done) => {
+        let entering = 
+        [
+            [-1, 1, 0, 0, -2, 0],
+            [-2, 1, 0, 0, 0,-2 ],
+            [-3, 1, 0, -2, 0, 0],
+            [1, 1/2, 0, 0, 0, -1/2]
+        ];
+        let expected_matrix = 
+        [
+            [-1, 1, 0, 0, -2, 0   ],
+            [4, 1/2, 0, -1/2, 0, 0],
+            [-3, 1, 0, -2, 0, 0   ],
+            [1, 1/2, 0, 0, 0, -1/2]
+        ];
+
+        let eb_var = 4;
+        let p1s = 2;
+        let expected_lb = -2;
 
         let actual = lh.make_pivoting_step(entering, p1s, eb_var);
         expect(entering).to.be.eql(expected_matrix);
