@@ -12,7 +12,7 @@ const zero = 0;
  */
 var check_inside = (fx) => {
     return (point) => point.y < fx(point.x);
-}
+};
 /**
  *  @param: eval_string
  *  @param: x
@@ -25,7 +25,7 @@ var f = (eval_string, x) => math.eval(eval_string, { x: x });
  *  @param: x
  *  return: 
  */
-var y = (fx) => { return (x) => f(fx, x) };
+var y = (fx) => { return (x) => f(fx, x); };
 
 /**
  *  We chose to work on definite integral for any increasing function, and on any positive domain/range for now.
@@ -39,13 +39,13 @@ function calculate_area(start, end, fx)
 {
     if (arguments.length < 3) 
     {
-        throw 'please provide start, end, and function for integration.'
+        throw ('please provide start, end, and function for integration.');
     }
 
     fx = y(fx);
     let sample_number = 10 * thousand;
     let xrange = end - start;
-    let max = fx(end)
+    let max = fx(end);
     let generator = mc.d2(start, xrange, zero, max);
     let estimator_function = check_inside(fx);
     let area_of_square = (end - start) * max;
@@ -61,21 +61,22 @@ let fun = (error, result) => {
     {
         throw error;
     }
+
     let ret = result[0].subpods[0].text.split('=');
     ret = ret[ret.length - 1];
+
     if (ret.indexOf('~~' > -1)) 
     {
         ret = ret.split('~~');
         ret = ret[ret.length - 1];
     }
-    return ret.trim();
-}
 
+    return ret.trim();
+};
 
 var wolfram = require('wolfram-alpha').createClient('XXXXX');
-
 wolfram.query("integrate e^x from 0 to 1", fun);
 
 module.exports = {
     calculate_area: calculate_area
-}
+};

@@ -1,4 +1,4 @@
-const classes = require('./../../classes.js')
+const classes = require('./../../classes.js');
 const Payoff = classes.Payoff;
 const Point = classes.Pair;
 const mc = require('./../index.js');
