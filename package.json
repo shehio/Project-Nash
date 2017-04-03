@@ -6,7 +6,8 @@
   "scripts": 
   {
     "start": "node index.js",
-    "test": "node_modules/.bin/mocha -w"
+    "test": "node_modules/.bin/mocha -w", 
+    "gulp": "node node_modules/gulp/bin/gulp.js" // just a workaround for now
   },
   "repository": 
   {
