@@ -30,4 +30,4 @@ function minmax(root, player) {
 module.exports = {
     minmax: minmax,
     minimax: minmax
-}
+};

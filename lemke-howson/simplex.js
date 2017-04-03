@@ -1,6 +1,6 @@
 
 let cT = new Array(40, 30);
-let A = new Array();
+let A = [];
 A.push(new Array(1, 2));
 A.push(new Array(1, 1));
 A.push(new Array(3, 2));
@@ -24,29 +24,32 @@ console.log(simplex(matrix(A, b, cT)));
  *  @todo: handle the exceptions that could arise from inputs.
  *  @todo: handle if no constraints: if A is empty, this is going to throw, and exception.
  */
-function matrix(A, b, cT) {
-
-    if (A.length != b.length) {
-        return new Array();
+function matrix(A, b, cT) 
+{
+    if (A.length != b.length) 
+    {
+        return [];
     }
 
-    let zeros = new Array();
+    let zeros = [];
 
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < n; i++) 
+    {
         zeros.push(0);
     }
 
-    for (let i = 0; i < cT.length; i++) {
+    for (let i = 0; i < cT.length; i++) 
+    {
         cT[i] = -cT[i];
     }
 
 
-    let ret = new Array();
+    let ret = [];
     let i = 0;
-    for (; i < A.length; i++) {
-        /** 
-         *  A simple way to have a deep copy
-         */
+
+    // for a deep copy
+    for (; i < A.length; i++) 
+    {
         let arr = zeros.concat();
         let basic = arr.slice(0, i).
             concat([1]).
@@ -62,21 +65,27 @@ function matrix(A, b, cT) {
 }
 
 
-function check(matrix) {
-    for (let i = 0; i < matrix.length; i++) {
-        if (matrix[last_row][i] < zero) {
+function check(matrix) 
+{
+    for (let i = 0; i < matrix.length; i++) 
+    {
+        if (matrix[last_row][i] < zero) 
+        {
             return false;
         }
     }
     return true;
 }
 
-function pivot(matrix) {
+function pivot(matrix) 
+{
     let zero = 0;
     let min = Infinity;
     let index = 0;
-    for (let i = 0; i < matrix.length; i++) {
-        if (matrix[last_row][i] < min) {
+    for (let i = 0; i < matrix.length; i++) 
+    {
+        if (matrix[last_row][i] < min) 
+        {
             index = i;
             min = matrix[last_row][i];
         }
@@ -84,37 +93,48 @@ function pivot(matrix) {
     return index;
 }
 
-function pick_row(matrix, col) {
+function pick_row(matrix, col) 
+{
     var ratio = Infinity;
-    for (let i = 0; i < n - 1; i++) {
-        if (matrix[i][last_col] / matrix[i][col] < ratio) {
+    for (let i = 0; i < n - 1; i++) 
+    {
+        if (matrix[i][last_col] / matrix[i][col] < ratio) 
+        {
             index = i;
             ratio = matrix[i][last_col] / matrix[i][col];
         }
     }
     return index;
 }
-function scale_row(matrix, row, col) {
+function scale_row(matrix, row, col) 
+{
     let scale = matrix[row][col];
-    for (let i = 0; i <= m; i++) {
+    for (let i = 0; i <= m; i++) 
+    {
         matrix[row][i] /= scale;
     }
 }
 
-function scale_matrix(matrix, row, col) {
-    for (let i = 0; i < n; i++) {
-        if (i != row) {
+function scale_matrix(matrix, row, col) 
+{
+    for (let i = 0; i < n; i++) 
+    {
+        if (i != row) 
+        {
             let ratio = matrix[i][col] / matrix[row][col];
-            for (let j = 0; j <= m; j++) {
+            for (let j = 0; j <= m; j++) 
+            {
                 matrix[i][j] -= matrix[row][j] * ratio;
             }
         }
     }
 }
 
-function simplex(matrix) {
+function simplex(matrix) 
+{
     console.log(matrix);
-    while (!check(matrix)) {
+    while (!check(matrix)) 
+    {
         let col = pivot(matrix);
         let row = pick_row(matrix, col);
         scale_row(matrix, row, col);

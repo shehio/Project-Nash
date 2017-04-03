@@ -1,4 +1,4 @@
-'use strict;'
+'use strict;';
 const assert = require('assert');
 const expect = require('chai').expect;
 const classes = require('./../../classes.js');
@@ -16,7 +16,7 @@ var example = function () {
     child = new Node(new Payoff(4, 5));
     node.add_child(child);
     return node;
-}
+};
 var another_example = function () {
     var node = new Node();
     var child = new Node();
@@ -29,7 +29,8 @@ var another_example = function () {
     node.add_child(child);
     return node;
 
-}
+};
+
 /**
  *  @todo: add some content to these tests!
  */

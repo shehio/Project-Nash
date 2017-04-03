@@ -14,9 +14,9 @@ const two = 2;
 */
 function range(start, stop, step)
 {
-    if (arguments.length == 0)
+    if (arguments.length === 0)
     {
-        throw new Error('range function must have at least one arguement.')
+        throw new Error('range function must have at least one arguement.');
     }
 
     // one param defined
@@ -36,8 +36,8 @@ function range(start, stop, step)
         return [];
     }
 
-    var result = [];
-    for (var i = start; step > 0 ? i < stop : i > stop; i += step)
+    let result = [];
+    for (let i = start; step > 0 ? i < stop : i > stop; i += step)
     {
         result.push(i);
     }
@@ -73,11 +73,11 @@ function normalize_matrices(matrix)
     }
 
     min = - min + 1;
-    let ret = new Array();
+    let ret = [];
 
     for (let i = 0; i < matrix.length; i++)
     {
-        let arr = new Array();
+        let arr = [];
 
         for (let j = 0; j < matrix[i].length; ++j)
         {
@@ -101,11 +101,13 @@ create_tableaux(intermediate);
 
 function create_tableaux(matrix)
 {
-    if (!matrix) {
+    if (!matrix) 
+    {
         throw new Error("matrix is null");
     }
 
-    if (matrix.length == 0) {
+    if (matrix.length === 0) 
+    {
         throw new Error("matrix is empty.");
     }
 
@@ -113,9 +115,7 @@ function create_tableaux(matrix)
     let p2s = matrix[0].length;
     let strategies = p1s + p2s;
 
-    /**
-    *  Should have an (s) by (s + 2) matrix
-    */
+    // Should have an (s) by (s + 2) matrix
     let tableaux = new Array(strategies);
     
     // initialize every row: an array of (S+2) zeros
@@ -141,7 +141,7 @@ function create_tableaux(matrix)
         for (let j = 0; j < matrix[0].length; j++) 
         {
             // avoiding negative zeros, it was failing the tests.
-            if (matrix[i][j].y == 0) 
+            if (matrix[i][j].y === 0) 
             {
                 tableaux[j + p1s][i + two] = 0;
             }
@@ -150,7 +150,7 @@ function create_tableaux(matrix)
                 tableaux[j + p1s][i + two] = - matrix[i][j].y;
             }
 
-            if (matrix[i][j].x == 0) 
+            if (matrix[i][j].x === 0) 
             {
                 tableaux[i][j + two + p1s] = 0;
             }
@@ -209,7 +209,8 @@ function make_pivoting_step(matrix, p1s, eb_var)
         if (matrix[i][col] < 0) 
         {
             let ratio = -matrix[i][1] / matrix[i][col];
-            if (min > ratio) {
+            if (min > ratio) 
+            {
                 min = ratio;
                 lb_var = matrix[i][0];
                 lb_var_row = i;
@@ -232,7 +233,7 @@ function make_pivoting_step(matrix, p1s, eb_var)
 
     for (let i of rows) 
     {
-        if (matrix[i][col] != 0) 
+        if (matrix[i][col] !== 0) 
         {
             for (let j of range(1, matrix[0].length)) 
             {
@@ -245,12 +246,14 @@ function make_pivoting_step(matrix, p1s, eb_var)
     return lb_var;
 }
 
-function find_equilibrium(matrix, p1s) {
-    // console.log(matrix);
-    if (p1s < zero || matrix.length <= p1s) {
+function find_equilibrium(matrix, p1s) 
+{
+    if (p1s < zero || matrix.length <= p1s) 
+    {
         throw ('Invalid number of strategies for player 1.');
     }
-    first_column_numbers = new Array();
+
+    first_column_numbers = [];
 
     for (let i of range(zero, matrix.length, one)) 
     {
@@ -261,11 +264,11 @@ function find_equilibrium(matrix, p1s) {
     {
         if (!(i in first_column_numbers)) 
         {
-            throw ('Invalid indices in the first column of the tableaux.')
+            throw new Error('Invalid indices in the first column of the tableaux.');
         }
     }
     
-    let eqs = new Array();
+    let eqs = [];
     for (let i of range(zero, matrix.length, one)) 
     {
         let strategy = Math.abs(matrix[i][zero]);
@@ -283,41 +286,41 @@ function find_equilibrium(matrix, p1s) {
     }
 
     /**
-    *  subset and concat vertically.
-    *  @todo: move it to a separate function.
-    */
-    console.log("******");
-    console.log(eqs);
-    console.log(p1s);
+     *  subset and concat vertically.
+     *  @todo: move it to a separate function.
+     */
     let a = eqs.slice(zero, p1s);
-    console.log("aaaaaaaaaa");
-    console.log(a);
     let b = eqs.slice(p1s, eqs.length);
-    console.log("bbbbbb");
-    console.log(a);
     let c = a.map(function (element, i) {
-        let arr = new Array();
+        let arr = [];
         arr.push(element);
         return arr.concat(b[i]);
     });
-    console.log("cccccc");
-    console.log(c);
     return c;
 }
 
 
-function normalize(arr) {
-    if (typeof arr === 'undefined') {
-        throw 'Array is undefined.'
+function normalize(arr) 
+{
+    if (typeof arr === 'undefined') 
+    {
+        throw new Error('Array is undefined.');
     }
+
     let norm = 0;
-    for (let i of arr) {
+
+    for (let i of arr) 
+    {
         norm = norm + i;
     }
-    let ret = new Array();
-    for (let i of arr) {
+
+    let ret = [];
+
+    for (let i of arr) 
+    {
         ret.push(i / norm);
     }
+
     return ret;
 }
 
@@ -325,30 +328,31 @@ function normalize_equilibrium(matrix)
 {
     if (typeof matrix === 'undefined')
     {
-        throw 'matrix has to be defined.'
+        throw new Error('matrix has to be defined.');
     }
 
     let types = new Array(typeof matrix[zero], typeof matrix[one]);
+    
     if ('undefined' in types) 
     {
-        throw 'matrix has empty probabilities.'
+        throw new Error('matrix has empty probabilities.');
     }
 
-    for (arr of matrix) 
+    for (let arr of matrix) 
     {
-        for (element of arr) 
+        for (let element of arr) 
         {
             if (typeof element === 'number') 
             {
                 continue;
             }
-            throw 'matrix has non number probabilities.'
+            throw new Error('matrix has non number probabilities.');
         }
     }
 
-    var ret = new Array();
-    var p1A = new Array();
-    var p2A = new Array();
+    var ret = [];
+    var p1A = [];
+    var p2A = [];
 
     // transposing n * 2 matrix
     for(let i = 0; i < matrix.length; ++i)
@@ -361,8 +365,9 @@ function normalize_equilibrium(matrix)
     return ret;
 }
 
-function matching_pennies() {
-    var matrix = new Array();
+function matching_pennies() 
+{
+    var matrix = [];
     var arr = [new Payoff(1, -1), new Payoff(-1, 1)];
     matrix.push(arr);
     arr = [new Payoff(-1, 1), new Payoff(1, -1)];
@@ -391,15 +396,17 @@ function solve(matrix)
     return matrix;
 }
 
-var prisoners_dilemma = function () {
-    var matrix = new Array();
-    var arr = [new Payoff(-1, -1), new Payoff(-10, 0)];
-    matrix.push(arr);
-    arr = [new Payoff(0, -10), new Payoff(-5, -5)];
-    matrix.push(arr);
-    return matrix;
-}
+module.exports = {
+    solve: solve,
+    range: range,
+    normalize_matrices: normalize_matrices,
+    create_tableaux: create_tableaux,
+    make_pivoting_step: make_pivoting_step,
+    find_equilibrium: find_equilibrium,
+    normalize_equilibrium: normalize_equilibrium
+};
 
+// should be coppied to tests!
 let matrix = matching_pennies();
 matrix = solve(matrix);
 console.log(matrix);
@@ -418,12 +425,12 @@ matrix =
 ];
 console.log(solve(matrix));
 
-module.exports = {
-    solve: solve,
-    range: range,
-    normalize_matrices: normalize_matrices,
-    create_tableaux: create_tableaux,
-    make_pivoting_step: make_pivoting_step,
-    find_equilibrium: find_equilibrium,
-    normalize_equilibrium: normalize_equilibrium
-}
+var prisoners_dilemma = function () 
+{
+    var matrix = [];
+    var arr = [new Payoff(-1, -1), new Payoff(-10, 0)];
+    matrix.push(arr);
+    arr = [new Payoff(0, -10), new Payoff(-5, -5)];
+    matrix.push(arr);
+    return matrix;
+};
