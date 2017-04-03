@@ -35,10 +35,13 @@ var y = (fx) => { return (x) => f(fx, x) };
  *  @param: fx
  *  throw: 
  */
-function calculate_area(start, end, fx) {
-    if (arguments.length < 3) {
+function calculate_area(start, end, fx) 
+{
+    if (arguments.length < 3) 
+    {
         throw 'please provide start, end, and function for integration.'
     }
+
     fx = y(fx);
     let sample_number = 10 * thousand;
     let xrange = end - start;
@@ -54,12 +57,14 @@ console.log(calculate_area(0, 1, 'e ^ x'));
 // console.log(calculate_area(1, 2, '2 * x + 3 * x * x * x'));
 
 let fun = (error, result) => {
-    if (error) {
+    if (error)
+    {
         throw error;
     }
     let ret = result[0].subpods[0].text.split('=');
     ret = ret[ret.length - 1];
-    if (ret.indexOf('~~' > -1)) {
+    if (ret.indexOf('~~' > -1)) 
+    {
         ret = ret.split('~~');
         ret = ret[ret.length - 1];
     }

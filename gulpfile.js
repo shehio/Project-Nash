@@ -5,7 +5,8 @@ const todos = require('./todos.js');
 /**
  *  all directories for watching, and code quality.
  */
-const sources = [
+const sources = 
+[
     './*.js',
     './test/*.js',
     './finance/**/*.js',
@@ -14,7 +15,8 @@ const sources = [
     './montecarlo/**/*.js'
 ];
 
-const tests = [
+const tests = 
+[
     './test/*.js',
     './finance/test/*.js',
     './lemke-howson/test/*.js',

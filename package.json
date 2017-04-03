@@ -3,21 +3,25 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
+  "scripts": 
+  {
     "start": "node index.js",
     "test": "node_modules/.bin/mocha -w"
   },
-  "repository": {
+  "repository": 
+  {
     "type": "git",
     "url": "git+https://github.com/shehio/nash.git"
   },
   "author": "shehio",
   "license": "MIT",
-  "bugs": {
+  "bugs": 
+  {
     "url": "https://github.com/shehio/nash/issues"
   },
   "homepage": "https://github.com/shehio/nash#readme",
-  "devDependencies": {
+  "devDependencies": 
+  {
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
     "gulp-jshint": "^2.0.1",
@@ -25,7 +29,8 @@
     "jshint": "^2.9.3",
     "mocha": "^3.0.2"
   },
-  "dependencies": {
+  "dependencies": 
+  {
     "mathjs": "^3.5.3",
     "moment": "^2.15.1",
     "probability-distributions": "^0.9.0",
