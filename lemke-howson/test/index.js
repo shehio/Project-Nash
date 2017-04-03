@@ -261,24 +261,44 @@ describe(' find equilibrium: ', () => {
     });
 });
 
-describe(' normalize equilibrium: ', () => {
-    it('works', (done) => {
-        let matrix = 
-        [
-            [2/5, 1/5, 4/15],
-            [1/10, 3/10, 1/2]
-        ];
-        let expected = 
-        [
-            [6/13, 3/13, 0.30769230769230765],
-            [0.11111111111111112, 3/9, 5/9   ]
-        ];
-        let actual = lh.normalize_equilibrium(matrix);
-        expect(actual).to.be.eql(expected);
-        done();
-    });
+// describe(' normalize equilibrium: ', () => {
+//     it('works', (done) => {
+//         let matrix = 
+//         [
+//             [2/5, 1/5, 4/15],
+//             [1/10, 3/10, 1/2]
+//         ];
+//         let expected = 
+//         [
+//             [6/13, 3/13, 0.30769230769230765],
+//             [0.11111111111111112, 3/9, 5/9   ]
+//         ];
+//         let actual = lh.normalize_equilibrium(matrix);
+//         expect(actual).to.be.eql(expected);
+//         done();
+//     });
 
-    it('works again', (done) => {
-        done();
-    });
-});
+//     it('works again', (done) => {
+//         done();
+//     });
+// });
+
+// describe(' solve: ', () => {
+//     it('works', (done) => {
+//         let matrix = 
+//         [
+//             [new Payoff(1,1)]
+//         ];
+//         let expected = 
+//         [
+//             [1, 1]
+//         ];
+//         let actual = lh.solve(matrix);
+//         expect(actual).to.be.eql(expected);
+//         done();
+//     });
+
+//     it('works again', (done) => {
+//         done();
+//     });
+// });
