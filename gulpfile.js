@@ -1,10 +1,9 @@
 const gulp = require('gulp');
 const mocha = require('gulp-mocha');
 const jshint = require('gulp-jshint');
-const todos = require('./todos.js');
-/**
- *  all directories for watching, and code quality.
- */
+// const todos = require('./todos.js');
+
+// all directories for watching, and code quality.
 const sources = 
 [
     './*.js',
@@ -26,20 +25,24 @@ const tests =
 
 gulp.task('default', ['jshint', 'test'], () => { });
 
-gulp.task('watch', () => {
-    gulp.watch(sources, () => {
+gulp.task('watch', () => 
+{
+    gulp.watch(sources, () => 
+    {
         gulp.run('jshint');
         gulp.run('test');
-    })
+    });
 });
 
-gulp.task('jshint', () => {
+gulp.task('jshint', () => 
+{
     return gulp.src(sources)
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
 
-gulp.task('test', ['jshint'], () => {
+gulp.task('test', ['jshint'], () => 
+{
     return gulp.src(tests, { read: false })
         .pipe(mocha({
             reporter: 'spec',
@@ -47,6 +50,7 @@ gulp.task('test', ['jshint'], () => {
         }));
 });
 
-gulp.task('todos', () => {
-    return todos;
-})
+// gulp.task('todos', () => 
+// {
+//     return todos;
+// });

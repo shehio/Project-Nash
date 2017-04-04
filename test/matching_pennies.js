@@ -1,35 +1,44 @@
-'use strict;'
+/*jshint expr: true*/
+'use strict;';
 const assert = require('assert');
 const expect = require('chai').expect;
-const classes = require('./../classes.js')
+const classes = require('./../classes.js');
 const Payoff = classes.Payoff;
 const Pair = classes.Pair;
 const nash = require('./../index.js');
 
-var matching_pennies = function () {
-    var matrix = new Array();
+var matching_pennies = function () 
+{
+    var matrix = [];
     var arr = [new Payoff(1, -1), new Payoff(-1, 1)];
     matrix.push(arr);
     arr = [new Payoff(-1, 1), new Payoff(1, -1)];
     matrix.push(arr);
     return matrix;
-}
+};
 
-describe('matching pennies: ', () => {
+describe('matching pennies: ', () => 
+{
     before(() => matrix = matching_pennies());
-    it('tests check_neighbors', (done) => {
+
+    it('tests check_neighbors', (done) => 
+    {
         const rows = 2;
         const cols = 2;
         var cn = (i, j) => nash.check_neighbors(matrix, i, j);
-        for (var i = 0; i < rows; i++) {
-            for (var j = 0; j < cols; ++j) {
+
+        for (var i = 0; i < rows; i++)
+        {
+            for (var j = 0; j < cols; ++j) 
+            {
                 assert.equal(cn(i, j), false);
             }
         }
         done();
     });
 
-    it('doesnt have a pure nash equilibrium', done => {
+    it('doesnt have a pure nash equilibrium', done => 
+    {
         var pure = nash.find_pure(matrix);
         expect(pure).to.not.be.undefined;
         expect(pure).to.not.be.null;
@@ -38,7 +47,8 @@ describe('matching pennies: ', () => {
         done();
     });
 
-    it('has mixed nash equilibrium', done => {
+    it('has mixed nash equilibrium', done => 
+    {
         var expected = { p: 0.5, average_payoff: 0 };
         var mixed = nash.find_mixed(matrix);
         expect(mixed).to.not.be.null;
