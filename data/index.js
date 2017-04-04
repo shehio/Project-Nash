@@ -5,17 +5,42 @@ const path = require('path');
 const base = 'http://api.worldbank.org/';
 literals = ['countries/', 'indicators/', 'date=', '&format=json'];
 
-// accept many countries, indicators, and years, and returns a 3d array of the data
-var make_request = function(countries, indicators, start_date, end_date)
-{
-    countries = concatenate(countries);
-    indicators = concatenate(indicators);
-    dates = format_dates(start_date, end_date);
-    let address = base + literals[0] + countries + '/' + literals[1] + indicators + '?' + literals[2] + dates + literals[3];
+// accept many countries, indicators, and years, and returns a matrix of the data
+// returned values are sorted by countries ordered by date
+// API limitation: we can't request too many indicators at a time, only one.
+var make_request = function(countries, indicator, start_date, end_date)
+{   
+    let countries_string = concatenate(countries);
+    let dates = format_dates(start_date, end_date);
+
+    let address = base + literals[0] + countries_string + '/' + literals[1] + 
+    indicator + '?' + literals[2] + dates + literals[3];
+
     let response = request('GET', address);
     response  = JSON.parse(response.getBody('utf8'));
-    console.log(response);
+    response = response[1];
 
+    countries = countries.sort();
+    let div = response.length / countries.length;
+    let ret = [];
+
+    for (let i = 0; i < countries.length; i++) 
+    {   
+        ret[i] = [];
+    }
+
+    for (let i = 0; i < response.length; i++)
+    {
+        let element = response[i];
+        ret[Math.floor(i/div)].push(element.value);
+    }
+
+    for (let i = 0; i < countries.length; i++) 
+    {   
+        ret[i].reverse();
+        ret[i].unshift(countries[i]);
+    }
+    console.log(ret);
 }
 
 var concatenate = function(array) 
@@ -37,6 +62,6 @@ var format_dates = function(start_date, end_date)
     return start_date + ':' + end_date;
 }
 
-make_request(['usa', 'chn'], ['NY.GDP.PCAP.CD'], 2000, 2001);
+make_request(['usa', 'chn', 'bra'], 'NY.GDP.PCAP.CD', 2000, 2010);
 
 // http://api.worldbank.org/countries/usa/indicators/NY.GDP.PCAP.CD?date=1960:2010&format=json
