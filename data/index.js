@@ -32,7 +32,7 @@ var make_request = function(countries, indicator, start_date, end_date)
     for (let i = 0; i < response.length; i++)
     {
         let element = response[i];
-        ret[Math.floor(i/div)].push(element.value);
+        ret[Math.floor(i/div)].push(parseFloat(element.value));
     }
 
     for (let i = 0; i < countries.length; i++) 
@@ -40,7 +40,7 @@ var make_request = function(countries, indicator, start_date, end_date)
         ret[i].reverse();
         ret[i].unshift(countries[i]);
     }
-    console.log(ret);
+    return ret;
 }
 
 var concatenate = function(array) 
@@ -62,6 +62,10 @@ var format_dates = function(start_date, end_date)
     return start_date + ':' + end_date;
 }
 
-make_request(['usa', 'chn', 'bra'], 'NY.GDP.PCAP.CD', 2000, 2010);
+module.exports = 
+{
+    make_request: make_request
+}
+// make_request(['usa', 'chn', 'bra'], 'NY.GDP.PCAP.CD', 2000, 2010);
 
 // http://api.worldbank.org/countries/usa/indicators/NY.GDP.PCAP.CD?date=1960:2010&format=json
