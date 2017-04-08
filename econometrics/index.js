@@ -82,6 +82,40 @@ var quick_test = function ()
     console.log("Link to t-table: http://www.sjsu.edu/faculty/gerstman/StatPrimer/t-table.pdf");
 }
 
+// d = Σ (t = 2 to n)  (et - et-1) * (et - et-1) / Σ (t = 1 to n) et ^ 2
+// We want to test the hypothesis that et doesn't correlate with et-1
+// i.e. tradionally we'd regress on et, and et-1, ie: et = βo + β1 et-1, 
+// and then test for the significance of β1 using a t-test, i.e. Ho: β1 = 0, Ha: β1 ≠ 0
+// It prevailed that derby watson statistic d = (2 - β1), i.e. an alternative way to test for autocorrelation.
+
+// To test for positive autocorrelation at significance α, the test statistic d is compared to
+//  lower and upper critical values (dL,α and dU,α):
+
+// If d < dL,α, there is statistical evidence that the error terms are positively autocorrelated.
+// If d > dU,α, there is no statistical evidence that the error terms are positively autocorrelated.
+// If dL,α < d < dU,α, the test is inconclusive.
+// dl, and du are given in a look-up table mapping number of features and points (observations).
+
+var durbin_watson = function (x, y) 
+{
+        let ret = regression_significance(x, y, 0);
+        let res = ret.residuals;
+        let num = 0; 
+        let denum  = res[0] * res[0];
+        
+        // derby-watson statistic 
+        let dw = 0;
+
+        for (let i = 1; i < res.length; i++)
+        {
+            num += (res[i] * res[i-1]) * (res[i] * res[i-1]);
+            denum += res[i] * res[i];
+        }
+
+        dw = num / denum;
+        return dw;
+}
+
 /**
  * 
  * 
