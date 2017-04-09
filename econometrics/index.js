@@ -128,6 +128,15 @@ var durbin_watson = function (x, y)
  * 
  */
 
+
+// But how do we generate the t-table, or the f-table?
+// http://stats.stackexchange.com/questions/72764/how-does-one-generate-the-table-mapping-t-test-values-to-p-values
+
+// cite this as well (used extensively): 
+// http://reliawiki.org/index.php/Multiple_Linear_Regression_Analysis
+// http://facweb.cs.depaul.edu/sjost/csc423/documents/f-test-reg.htm
+// http://reliawiki.org/index.php/Simple_Linear_Regression_Analysis
+
 module.exports  = {
     regression_significance: regression_significance
 }
