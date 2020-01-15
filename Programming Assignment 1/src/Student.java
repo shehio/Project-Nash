@@ -15,11 +15,11 @@ public interface Student {
   // * ret.length == 10 and the elements of ret are all different
   // * forall school in ret, 0 <= school < schools.length
   public int[] getApplications(
-      int N,
-      double S,
-      double T,
-      double W,
-      double aptitude,
-      List<Double> schools,
-      List<Double> synergies);
+          int N,
+          double S,
+          double T,
+          double W,
+          double aptitude,
+          List<Double> schools,
+          List<Double> synergies);
 }

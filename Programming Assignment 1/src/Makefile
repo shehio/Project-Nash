@@ -9,13 +9,13 @@ sd1.zip: Admissions.java AdmissionsConfig.java Makefile Student.java Student_hol
 	zip sd1 Admissions.java AdmissionsConfig.java Makefile Student.java Student_holist.java Student_random.java Student_synergist.java Student_usnews.java Tournament.java students.txt
 
 test: results.csv
-	cat results.csv
+	cat ./../results.csv
 
 results.csv: all students.txt
-	java -Djava.util.Arrays.useLegacyMergeSort=true -ea Admissions students.txt > results.csv
+	cd ./../out && java -Djava.util.Arrays.useLegacyMergeSort=true -ea Admissions ./../students.txt > ./../results.csv
 
 Admissions.class: *.java
-	javac -Xlint Admissions.java *.java
+	javac -Xlint -d ./../out *.java
 
 teams.csv:
 	./get_teams_by_netid.py > teams.csv
@@ -25,7 +25,7 @@ teams.csv:
 #	@while [[ `wc -l < students.txt` -lt 12 ]]; do 	ls | grep -e 'Student_.*\.java' | sed s/.*Student_// | sed s/\.java$$// >> students.txt; done
 
 clean:
-	rm -rf *.class sd1.zip #results.csv students.txt
+	rm -rf out/*.class
 
 #leaderboard:
 #	rm -rf *.class results.csv students.txt Student_*.java ~/../htdocs/cos445/leaderboard_results.html
