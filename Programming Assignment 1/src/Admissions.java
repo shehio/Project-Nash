@@ -16,7 +16,10 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
     super(Student.class, studentNames);
   }
 
+<<<<<<< HEAD
   // Sets the the random variables: aptitudes, schools, and synergies.
+=======
+>>>>>>> More refactoring...
   public double[] runTrial(List<Class<? extends Student>> strategies, AdmissionsConfig config) {
     // config might randomize each time
     final double S = config.getS();
@@ -54,6 +57,7 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
     int[][] studentsPreferences = new int[students.size()][];
     PrintStream stdout = System.out;
     System.setOut(new PrintStream(OutputStream.nullOutputStream()));
+<<<<<<< HEAD
 
     for (int studentIndex = 0; studentIndex < studentsPreferences.length; ++studentIndex) {
 
@@ -75,6 +79,26 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
               students.size(),
               studentsPreferences[studentIndex],
               students.get(studentIndex).getClass().getSimpleName());
+=======
+    for (int stu = 0; stu < studentsPreferences.length; ++stu) {
+      // System.err.println(students.get(stu).getClass().getSimpleName());
+      // really gross boxing code
+      studentsPreferences[stu] =
+              students
+                      .get(stu)
+                      .getApplications(
+                              students.size(),
+                              S,
+                              T,
+                              W,
+                              aptitudes[stu],
+                              Collections.unmodifiableList(
+                                      DoubleStream.of(schoolsQuality).boxed().collect(Collectors.toList())),
+                              Collections.unmodifiableList(
+                                      DoubleStream.of(synergies[stu]).boxed().collect(Collectors.toList())));
+      checkLegalStuPrefs(
+              students.size(), studentsPreferences[stu], students.get(stu).getClass().getSimpleName());
+>>>>>>> More refactoring...
     }
 
     System.setOut(stdout);
@@ -84,25 +108,30 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
     for (int uni = 0; uni < schoolsQuality.length; ++uni) {
       uniPrefTrees.add(new TreeSet<StudentPair>());
     }
+<<<<<<< HEAD
 
     for (int studentIndex = 0; studentIndex < studentsPreferences.length; ++studentIndex) {
       for (int uni : studentsPreferences[studentIndex]) {
         uniPrefTrees.get(uni).add(new StudentPair(studentIndex, aptitudes[studentIndex] + synergies[studentIndex][uni]));
+=======
+    for (int studentIndex = 0; studentIndex < studentsPreferences.length; ++studentIndex) {
+      for (int university : studentsPreferences[studentIndex]) {
+        uniPrefTrees.get(university).add(new StudentPair(studentIndex, aptitudes[studentIndex] + synergies[studentIndex][university]));
+>>>>>>> More refactoring...
       }
     }
 
     ArrayList<ArrayList<Integer>> uniPrefs = new ArrayList<ArrayList<Integer>>();
     for (TreeSet<StudentPair> prefTree : uniPrefTrees) {
       uniPrefs.add(
-          prefTree.stream()
-              .map(StudentPair::getIndex)
-              .collect(Collectors.toCollection(ArrayList::new)));
+              prefTree.stream()
+                      .map(StudentPair::getIndex)
+                      .collect(Collectors.toCollection(ArrayList::new)));
     }
 
     // Initially everyone is not matched
     int[] stuUnis = new int[students.size()];
     int[] uniStus = new int[students.size()];
-    
     for (int i = 0; i < students.size(); ++i) {
       stuUnis[i] = uniStus[i] = -1;
     }
@@ -115,6 +144,7 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
       for (int universityIndex = 0; universityIndex < schoolsQuality.length; ++universityIndex) {
         if (uniStus[universityIndex] == -1 && !uniPrefs.get(universityIndex).isEmpty()) {
           flag = true;
+<<<<<<< HEAD
           int studentIndex = uniPrefs.get(universityIndex).remove(uniPrefs.get(universityIndex).size() - 1);
           if (stuUnis[studentIndex] == -1) {
             stuUnis[studentIndex] = universityIndex;
@@ -124,27 +154,49 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
             uniStus[stuUnis[studentIndex]] = -1;
             stuUnis[studentIndex] = universityIndex;
             uniStus[universityIndex] = studentIndex;
+=======
+          int stu = uniPrefs.get(universityIndex).remove(uniPrefs.get(universityIndex).size() - 1);
+          if (stuUnis[stu] == -1) {
+            stuUnis[stu] = universityIndex;
+            uniStus[universityIndex] = stu;
+          } else if (Arrays.asList(studentsPreferences[stu]).indexOf(universityIndex)
+                  < Arrays.asList(studentsPreferences[stu]).indexOf(stuUnis[stu])) {
+            uniStus[stuUnis[stu]] = -1;
+            stuUnis[stu] = universityIndex;
+            uniStus[universityIndex] = stu;
+            int studentIndex = uniPrefs.get(universityIndex).remove(uniPrefs.get(universityIndex).size() - 1);
+            if (stuUnis[studentIndex] == -1) {
+              stuUnis[studentIndex] = universityIndex;
+              uniStus[universityIndex] = studentIndex;
+            } else if (Arrays.asList(studentsPreferences[studentIndex]).indexOf(universityIndex)
+                    < Arrays.asList(studentsPreferences[studentIndex]).indexOf(stuUnis[studentIndex])) {
+              uniStus[stuUnis[studentIndex]] = -1;
+              stuUnis[studentIndex] = universityIndex;
+              uniStus[universityIndex] = studentIndex;
+            }
+>>>>>>> More refactoring...
           }
         }
       }
-    }
 
-    // Students are rewarded with a point for every school they weakly prefer their result to
-    double[] ret = new double[students.size()];
-    for (int stu = 0; stu < students.size(); ++stu) {
-      if (stuUnis[stu] != -1) {
-        double res = schoolsQuality[stuUnis[stu]] + synergies[stu][stuUnis[stu]];
-        for (int uni = 0; uni < schoolsQuality.length; ++uni) {
-          if (schoolsQuality[uni] + synergies[stu][uni] <= res) {
-            ++ret[stu];
+      // Students are rewarded with a point for every school they weakly prefer their result to
+      double[] payoff = new double[students.size()];
+      for (int studentIndex = 0; studentIndex < students.size(); ++studentIndex) {
+        if (stuUnis[studentIndex] != -1) {
+          double res = schoolsQuality[stuUnis[studentIndex]] + synergies[studentIndex][stuUnis[studentIndex]];
+          for (int uni = 0; uni < schoolsQuality.length; ++uni) {
+            if (schoolsQuality[uni] + synergies[studentIndex][uni] <= res) {
+              ++payoff[studentIndex];
+            }
           }
         }
       }
+
+      for (int i = 0; i < payoff.length; ++i) {
+        payoff[i] /= strategies.size();
+      }
+      return ret;
     }
-    for (int i = 0; i < ret.length; ++i) {
-      ret[i] /= strategies.size();
-    }
-    return ret;
   }
 
   public static void main(String[] args) throws java.io.FileNotFoundException {
