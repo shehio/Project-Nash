@@ -178,26 +178,26 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
           }
         }
       }
+    }
 
       // Students are rewarded with a point for every school they weakly prefer their result to
-      double[] payoff = new double[students.size()];
+      double[] payoffs = new double[students.size()];
       for (int studentIndex = 0; studentIndex < students.size(); ++studentIndex) {
         if (stuUnis[studentIndex] != -1) {
           double res = schoolsQuality[stuUnis[studentIndex]] + synergies[studentIndex][stuUnis[studentIndex]];
           for (int uni = 0; uni < schoolsQuality.length; ++uni) {
             if (schoolsQuality[uni] + synergies[studentIndex][uni] <= res) {
-              ++payoff[studentIndex];
+              ++payoffs[studentIndex];
             }
           }
         }
       }
 
-      for (int i = 0; i < payoff.length; ++i) {
-        payoff[i] /= strategies.size();
+      for (int i = 0; i < payoffs.length; ++i) {
+        payoffs[i] /= strategies.size();
       }
-      return ret;
+      return payoffs;
     }
-  }
 
   public static void main(String[] args) throws java.io.FileNotFoundException {
     assert args.length >= 1 : "Expected filename of strategies as first argument";
