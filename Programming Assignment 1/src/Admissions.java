@@ -16,64 +16,13 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
     super(Student.class, studentNames);
   }
 
-  private static class StudentPair implements Comparable<StudentPair> {
-    public StudentPair(int i, double q) {
-      index = i;
-      quality = q;
-    }
-
-    public int getIndex() {
-      return index;
-    }
-
-    private int index;
-    private double quality;
-
-    public int compareTo(StudentPair n) { // sort by quality, then index
-      int ret = Double.compare(quality, n.quality);
-      return (ret == 0) ? (Integer.compare(index, n.index)) : ret;
-    }
-  }
-
-  private static boolean checkLegalStuPrefs(int max, int[] prefs, String netid) {
-    assert prefs.length == numApplications
-        : netid + ": too many applications" + Arrays.toString(prefs);
-    int j = 0, numRepeated = 0;
-    while (j < numApplications) {
-      assert prefs[j] < max : netid + ": element index out of range" + Arrays.toString(prefs);
-      assert prefs[j] >= 0 : netid + ": element index out of range" + Arrays.toString(prefs);
-      for (int k = 0; k < j; ++k) {
-        if (prefs[k] == prefs[j]) {
-          if (numRepeated == 0) {
-            System.err.println(netid + ": repeated applications" + Arrays.toString(prefs));
-          }
-          for (k = j + 1; k < numApplications; ++k) {
-            prefs[k - 1] = prefs[k];
-          }
-          numRepeated++;
-          continue;
-        }
-      }
-      ++j;
-    }
-    while (numRepeated > 0) {
-      int newApp = rand.nextInt(max);
-      for (j = 0; j < numApplications - numRepeated; ++j) {
-        if (prefs[j] == newApp) {
-          newApp = rand.nextInt(max);
-          j = 0;
-        }
-      }
-      prefs[numApplications - numRepeated--] = newApp;
-    }
-    return true;
-  }
-
+  // Sets the the random variables: aptitudes, schools, and synergies.
   public double[] runTrial(List<Class<? extends Student>> strategies, AdmissionsConfig config) {
     // config might randomize each time
     final double S = config.getS();
     final double T = config.getT();
     final double W = config.getW();
+
     List<Student> students = new ArrayList<Student>();
     for (Class<? extends Student> studentClass : strategies) {
       try {
@@ -82,6 +31,7 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
         throw new RuntimeException(roe);
       }
     }
+
     // Initialize random variables
     double[] aptitudes = new double[students.size()];
     double[] schools = new double[students.size()];
@@ -93,6 +43,7 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
         synergies[i][j] = rand.nextDouble() * W;
       }
     }
+
     // Sort by decreasing order of school quality
     Arrays.sort(schools);
     for (int i = 0; i < students.size(); ++i) {
@@ -100,28 +51,32 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
     }
 
     // Get each student's choices of schools to which to apply
-    int[][] stuPrefs = new int[students.size()][];
+    int[][] studentsPreferences = new int[students.size()][];
     PrintStream stdout = System.out;
     System.setOut(new PrintStream(OutputStream.nullOutputStream()));
-    for (int stu = 0; stu < stuPrefs.length; ++stu) {
-      // System.err.println(students.get(stu).getClass().getSimpleName());
+
+    for (int studentIndex = 0; studentIndex < studentsPreferences.length; ++studentIndex) {
+
       // really gross boxing code
-      stuPrefs[stu] =
+      studentsPreferences[studentIndex] =
           students
-              .get(stu)
+              .get(studentIndex)
               .getApplications(
                   students.size(),
                   S,
                   T,
                   W,
-                  aptitudes[stu],
+                  aptitudes[studentIndex],
                   Collections.unmodifiableList(
                       DoubleStream.of(schools).boxed().collect(Collectors.toList())),
                   Collections.unmodifiableList(
-                      DoubleStream.of(synergies[stu]).boxed().collect(Collectors.toList())));
+                      DoubleStream.of(synergies[studentIndex]).boxed().collect(Collectors.toList())));
       checkLegalStuPrefs(
-          students.size(), stuPrefs[stu], students.get(stu).getClass().getSimpleName());
+              students.size(),
+              studentsPreferences[studentIndex],
+              students.get(studentIndex).getClass().getSimpleName());
     }
+
     System.setOut(stdout);
 
     // Build university preference lists filtered by applications
@@ -129,11 +84,13 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
     for (int uni = 0; uni < schools.length; ++uni) {
       uniPrefTrees.add(new TreeSet<StudentPair>());
     }
-    for (int stu = 0; stu < stuPrefs.length; ++stu) {
-      for (int uni : stuPrefs[stu]) {
-        uniPrefTrees.get(uni).add(new StudentPair(stu, aptitudes[stu] + synergies[stu][uni]));
+
+    for (int studentIndex = 0; studentIndex < studentsPreferences.length; ++studentIndex) {
+      for (int uni : studentsPreferences[studentIndex]) {
+        uniPrefTrees.get(uni).add(new StudentPair(studentIndex, aptitudes[studentIndex] + synergies[studentIndex][uni]));
       }
     }
+
     ArrayList<ArrayList<Integer>> uniPrefs = new ArrayList<ArrayList<Integer>>();
     for (TreeSet<StudentPair> prefTree : uniPrefTrees) {
       uniPrefs.add(
@@ -160,8 +117,8 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
           if (stuUnis[stu] == -1) {
             stuUnis[stu] = uni;
             uniStus[uni] = stu;
-          } else if (Arrays.asList(stuPrefs[stu]).indexOf(uni)
-              < Arrays.asList(stuPrefs[stu]).indexOf(stuUnis[stu])) {
+          } else if (Arrays.asList(studentsPreferences[stu]).indexOf(uni)
+              < Arrays.asList(studentsPreferences[stu]).indexOf(stuUnis[stu])) {
             uniStus[stuUnis[stu]] = -1;
             stuUnis[stu] = uni;
             uniStus[uni] = stu;
@@ -206,5 +163,58 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
     for (int i = 0; i != N; ++i) {
       System.out.println(strategyNames.get(i).substring(8) + "," + Double.toString(res[i]));
     }
+  }
+
+  private static class StudentPair implements Comparable<StudentPair> {
+    public StudentPair(int i, double q) {
+      index = i;
+      quality = q;
+    }
+
+    public int getIndex() {
+      return index;
+    }
+
+    private int index;
+    private double quality;
+
+    public int compareTo(StudentPair n) { // sort by quality, then index
+      int ret = Double.compare(quality, n.quality);
+      return (ret == 0) ? (Integer.compare(index, n.index)) : ret;
+    }
+  }
+
+  private static boolean checkLegalStuPrefs(int max, int[] prefs, String netid) {
+    assert prefs.length == numApplications
+            : netid + ": too many applications" + Arrays.toString(prefs);
+    int j = 0, numRepeated = 0;
+    while (j < numApplications) {
+      assert prefs[j] < max : netid + ": element index out of range" + Arrays.toString(prefs);
+      assert prefs[j] >= 0 : netid + ": element index out of range" + Arrays.toString(prefs);
+      for (int k = 0; k < j; ++k) {
+        if (prefs[k] == prefs[j]) {
+          if (numRepeated == 0) {
+            System.err.println(netid + ": repeated applications" + Arrays.toString(prefs));
+          }
+          for (k = j + 1; k < numApplications; ++k) {
+            prefs[k - 1] = prefs[k];
+          }
+          numRepeated++;
+          continue;
+        }
+      }
+      ++j;
+    }
+    while (numRepeated > 0) {
+      int newApp = rand.nextInt(max);
+      for (j = 0; j < numApplications - numRepeated; ++j) {
+        if (prefs[j] == newApp) {
+          newApp = rand.nextInt(max);
+          j = 0;
+        }
+      }
+      prefs[numApplications - numRepeated--] = newApp;
+    }
+    return true;
   }
 }
