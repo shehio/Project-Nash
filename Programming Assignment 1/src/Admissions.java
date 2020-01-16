@@ -34,20 +34,20 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
 
     // Initialize random variables
     double[] aptitudes = new double[students.size()];
-    double[] schools = new double[students.size()];
+    double[] schoolsQuality = new double[students.size()];
     double[][] synergies = new double[students.size()][students.size()];
     for (int i = 0; i < students.size(); ++i) {
       aptitudes[i] = rand.nextDouble() * S;
-      schools[i] = rand.nextDouble() * T;
+      schoolsQuality[i] = rand.nextDouble() * T;
       for (int j = 0; j < students.size(); ++j) {
         synergies[i][j] = rand.nextDouble() * W;
       }
     }
 
     // Sort by decreasing order of school quality
-    Arrays.sort(schools);
+    Arrays.sort(schoolsQuality);
     for (int i = 0; i < students.size(); ++i) {
-      schools[i] = T - schools[i];
+      schoolsQuality[i] = T - schoolsQuality[i];
     }
 
     // Get each student's choices of schools to which to apply
@@ -68,7 +68,7 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
                   W,
                   aptitudes[studentIndex],
                   Collections.unmodifiableList(
-                      DoubleStream.of(schools).boxed().collect(Collectors.toList())),
+                      DoubleStream.of(schoolsQuality).boxed().collect(Collectors.toList())),
                   Collections.unmodifiableList(
                       DoubleStream.of(synergies[studentIndex]).boxed().collect(Collectors.toList())));
       checkLegalStuPrefs(
@@ -81,7 +81,7 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
 
     // Build university preference lists filtered by applications
     ArrayList<TreeSet<StudentPair>> uniPrefTrees = new ArrayList<TreeSet<StudentPair>>();
-    for (int uni = 0; uni < schools.length; ++uni) {
+    for (int uni = 0; uni < schoolsQuality.length; ++uni) {
       uniPrefTrees.add(new TreeSet<StudentPair>());
     }
 
@@ -102,26 +102,28 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
     // Initially everyone is not matched
     int[] stuUnis = new int[students.size()];
     int[] uniStus = new int[students.size()];
+    
     for (int i = 0; i < students.size(); ++i) {
       stuUnis[i] = uniStus[i] = -1;
     }
+
     boolean flag = true;
 
     // Universities which are not matched keep proposing until they run out of applicants
     while (flag) {
       flag = false;
-      for (int uni = 0; uni < schools.length; ++uni) {
-        if (uniStus[uni] == -1 && !uniPrefs.get(uni).isEmpty()) {
+      for (int universityIndex = 0; universityIndex < schoolsQuality.length; ++universityIndex) {
+        if (uniStus[universityIndex] == -1 && !uniPrefs.get(universityIndex).isEmpty()) {
           flag = true;
-          int stu = uniPrefs.get(uni).remove(uniPrefs.get(uni).size() - 1);
-          if (stuUnis[stu] == -1) {
-            stuUnis[stu] = uni;
-            uniStus[uni] = stu;
-          } else if (Arrays.asList(studentsPreferences[stu]).indexOf(uni)
-              < Arrays.asList(studentsPreferences[stu]).indexOf(stuUnis[stu])) {
-            uniStus[stuUnis[stu]] = -1;
-            stuUnis[stu] = uni;
-            uniStus[uni] = stu;
+          int studentIndex = uniPrefs.get(universityIndex).remove(uniPrefs.get(universityIndex).size() - 1);
+          if (stuUnis[studentIndex] == -1) {
+            stuUnis[studentIndex] = universityIndex;
+            uniStus[universityIndex] = studentIndex;
+          } else if (Arrays.asList(studentsPreferences[studentIndex]).indexOf(universityIndex)
+              < Arrays.asList(studentsPreferences[studentIndex]).indexOf(stuUnis[studentIndex])) {
+            uniStus[stuUnis[studentIndex]] = -1;
+            stuUnis[studentIndex] = universityIndex;
+            uniStus[universityIndex] = studentIndex;
           }
         }
       }
@@ -131,9 +133,9 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
     double[] ret = new double[students.size()];
     for (int stu = 0; stu < students.size(); ++stu) {
       if (stuUnis[stu] != -1) {
-        double res = schools[stuUnis[stu]] + synergies[stu][stuUnis[stu]];
-        for (int uni = 0; uni < schools.length; ++uni) {
-          if (schools[uni] + synergies[stu][uni] <= res) {
+        double res = schoolsQuality[stuUnis[stu]] + synergies[stu][stuUnis[stu]];
+        for (int uni = 0; uni < schoolsQuality.length; ++uni) {
+          if (schoolsQuality[uni] + synergies[stu][uni] <= res) {
             ++ret[stu];
           }
         }
@@ -165,28 +167,10 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
     }
   }
 
-  private static class StudentPair implements Comparable<StudentPair> {
-    public StudentPair(int i, double q) {
-      index = i;
-      quality = q;
-    }
-
-    public int getIndex() {
-      return index;
-    }
-
-    private int index;
-    private double quality;
-
-    public int compareTo(StudentPair n) { // sort by quality, then index
-      int ret = Double.compare(quality, n.quality);
-      return (ret == 0) ? (Integer.compare(index, n.index)) : ret;
-    }
-  }
-
   private static boolean checkLegalStuPrefs(int max, int[] prefs, String netid) {
     assert prefs.length == numApplications
             : netid + ": too many applications" + Arrays.toString(prefs);
+
     int j = 0, numRepeated = 0;
     while (j < numApplications) {
       assert prefs[j] < max : netid + ": element index out of range" + Arrays.toString(prefs);
@@ -205,6 +189,7 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
       }
       ++j;
     }
+
     while (numRepeated > 0) {
       int newApp = rand.nextInt(max);
       for (j = 0; j < numApplications - numRepeated; ++j) {
@@ -216,5 +201,24 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
       prefs[numApplications - numRepeated--] = newApp;
     }
     return true;
+  }
+
+  private static class StudentPair implements Comparable<StudentPair> {
+    public StudentPair(int i, double q) {
+      index = i;
+      quality = q;
+    }
+
+    public int getIndex() {
+      return index;
+    }
+
+    private int index;
+    private double quality;
+
+    public int compareTo(StudentPair n) { // sort by quality, then index
+      int ret = Double.compare(quality, n.quality);
+      return (ret == 0) ? (Integer.compare(index, n.index)) : ret;
+    }
   }
 }
