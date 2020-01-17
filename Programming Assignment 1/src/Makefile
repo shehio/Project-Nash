@@ -11,7 +11,7 @@ sd1.zip: Admissions.java AdmissionsConfig.java Makefile Student.java Student_hol
 test: results.csv
 	cat ./../results.csv
 
-results.csv: all students.txt
+results.csv: all
 	cd ./../out && java -Djava.util.Arrays.useLegacyMergeSort=true -ea Admissions ./../students.txt > ./../results.csv
 
 Admissions.class: *.java
@@ -25,7 +25,7 @@ teams.csv:
 #	@while [[ `wc -l < students.txt` -lt 12 ]]; do 	ls | grep -e 'Student_.*\.java' | sed s/.*Student_// | sed s/\.java$$// >> students.txt; done
 
 clean:
-	rm -rf out/*.class
+	rm -rf ./../out/*.class
 
 #leaderboard:
 #	rm -rf *.class results.csv students.txt Student_*.java ~/../htdocs/cos445/leaderboard_results.html
