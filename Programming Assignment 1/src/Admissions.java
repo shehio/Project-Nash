@@ -83,7 +83,6 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
 
       int[] studentsUnis = matchStudentsWithUnis(
          students.size(),
-         schoolsQuality,
          studentsPreferences,
          unisPreferences);
 
@@ -211,7 +210,9 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
 
    private int[] matchStudentsWithUnis(
       int studentsCount,
-      double[] schoolsQuality, int[][] studentsPreferences, ArrayList<ArrayList<Integer>> unisPreferences) {
+      int[][] studentsPreferences,
+      ArrayList<ArrayList<Integer>> unisPreferences) {
+
       // Initially everyone is not matched
       int[] studentsUnis = new int[studentsCount];
       int[] unisStudents = new int[studentsCount];
@@ -224,34 +225,36 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
       // Universities which are not matched keep proposing until they run out of applicants
       while (flag) {
          flag = false;
-         for (int universityIndex = 0; universityIndex < schoolsQuality.length; ++universityIndex) {
+         for (int universityIndex = 0; universityIndex < unisStudents.length; ++universityIndex) {
             if (unisStudents[universityIndex] == -1 && !unisPreferences.get(universityIndex).isEmpty()) {
                flag = true;
-               int stu = unisPreferences.get(universityIndex).remove(unisPreferences.get(universityIndex).size() - 1);
-               if (studentsUnis[stu] == -1) {
-                  studentsUnis[stu] = universityIndex;
-                  unisStudents[universityIndex] = stu;
-               } else if (Arrays.asList(studentsPreferences[stu]).indexOf(universityIndex)
-                  < Arrays.asList(studentsPreferences[stu]).indexOf(studentsUnis[stu])) {
-                  unisStudents[studentsUnis[stu]] = -1;
-                  studentsUnis[stu] = universityIndex;
-                  unisStudents[universityIndex] = stu;
-                  int studentIndex = unisPreferences.get(universityIndex).remove(unisPreferences.get(universityIndex).size() - 1);
-                  if (studentsUnis[studentIndex] == -1) {
-                     studentsUnis[studentIndex] = universityIndex;
-                     unisStudents[universityIndex] = studentIndex;
-                  } else if (Arrays.asList(studentsPreferences[studentIndex]).indexOf(universityIndex)
-                     < Arrays.asList(studentsPreferences[studentIndex]).indexOf(studentsUnis[studentIndex])) {
-                     unisStudents[studentsUnis[studentIndex]] = -1;
-                     studentsUnis[studentIndex] = universityIndex;
-                     unisStudents[universityIndex] = studentIndex;
-                  }
+               int studentIndex = unisPreferences.get(universityIndex).remove(unisPreferences.get(universityIndex).size() - 1);
+               if (studentsUnis[studentIndex] == -1) {
+                  assignStudentToUni(studentsUnis, unisStudents, studentIndex, universityIndex);
+               } else if (studentPrefersUniMore(
+                  studentsPreferences[studentIndex],
+                  universityIndex,
+                  studentsUnis[studentIndex]))
+               {
+                  unisStudents[studentsUnis[studentIndex]] = -1;
+                  assignStudentToUni(studentsUnis, unisStudents, studentIndex, universityIndex);
                }
             }
          }
       }
 
       return studentsUnis;
+   }
+
+   private void assignStudentToUni(int[] studentsUnis, int[] unisStudents, int studentIndex, int universityIndex) {
+      studentsUnis[studentIndex] = universityIndex;
+      unisStudents[universityIndex] = studentIndex;
+   }
+
+   private boolean studentPrefersUniMore(int[] studentPreferences,  int currentUniIndex, int chosenUniIndex) {
+      int currentIndex = Arrays.asList(studentPreferences).indexOf(currentUniIndex);
+      int chosenIndex = Arrays.asList(studentPreferences).indexOf(chosenUniIndex);
+      return currentIndex < chosenIndex;
    }
 
    private double[] calculatePayoffs(
