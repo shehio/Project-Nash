@@ -8,17 +8,9 @@ const two = 2;
 function solve(matrix) 
 {
     let p1s = matrix.length;
-    let init_basis_var = one;
-    let left_basis_var = 0;
 
     matrix = helpers.normalize_matrices(matrix);
     matrix = create_tableaux(matrix);
-    left_basis_var = make_pivoting_step(matrix, p1s, init_basis_var);
-
-    while (init_basis_var != Math.abs(left_basis_var))
-    {
-        left_basis_var = make_pivoting_step(matrix, p1s, -left_basis_var);
-    }
     
     matrix = find_equilibrium(matrix, p1s);
     matrix = helpers.normalize_equilibrium(matrix);
@@ -27,9 +19,24 @@ function solve(matrix)
 
 function find_equilibrium(matrix, p1s) 
 {
-    if (p1s < zero || matrix.length <= p1s) 
+    if (p1s < zero) 
     {
         throw ('Invalid number of strategies for player 1.');
+    }
+
+    if (matrix.length <= p1s)
+    {
+        throw ('Provided payoff matrix is less than the number of strategies for player 1.');
+    }
+
+    let init_basis_var = one;
+    let left_basis_var = 0;
+    
+    left_basis_var = make_pivoting_step(matrix, p1s, init_basis_var);
+
+    while (init_basis_var != Math.abs(left_basis_var))
+    {
+        left_basis_var = make_pivoting_step(matrix, p1s, -left_basis_var);
     }
 
     first_column_numbers = [];
@@ -53,7 +60,7 @@ function find_equilibrium(matrix, p1s)
         let strategy = Math.abs(matrix[i][zero]);
         let probability = matrix[i][one];
 
-        // normalizing for zero based again
+        // Normalizing for zero based again.
         if (strategy < 0 || probability < 0) 
         {
             eqs[strategy - one] = 0;
