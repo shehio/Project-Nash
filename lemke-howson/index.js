@@ -19,25 +19,8 @@ function solve(matrix)
 
 function find_equilibrium(matrix, p1s) 
 {
-    if (p1s < zero) 
-    {
-        throw ('Invalid number of strategies for player 1.');
-    }
-
-    if (matrix.length <= p1s)
-    {
-        throw ('Provided payoff matrix is less than the number of strategies for player 1.');
-    }
-
-    let init_basis_var = one;
-    let left_basis_var = 0;
-    
-    left_basis_var = make_pivoting_step(matrix, p1s, init_basis_var);
-
-    while (init_basis_var != Math.abs(left_basis_var))
-    {
-        left_basis_var = make_pivoting_step(matrix, p1s, -left_basis_var);
-    }
+    validate_input(matrix, p1s);
+    find_left_basis(matrix, p1s);
 
     first_column_numbers = [];
 
@@ -233,6 +216,32 @@ function make_pivoting_step(matrix, p1s, eb_var)
     return lb_var;
 }
 
+function validate_input(matrix, p1s)
+{
+    if (p1s < zero) 
+    {
+        throw ('Invalid number of strategies for player 1.');
+    }
+
+    if (matrix.length <= p1s)
+    {
+        throw ('Provided payoff matrix is less than the number of strategies for player 1.');
+    }
+}
+
+function find_left_basis(matrix, p1s)
+{
+    let init_basis_var = one;
+    let left_basis_var = 0;
+    
+    left_basis_var = make_pivoting_step(matrix, p1s, init_basis_var);
+
+    while (init_basis_var != Math.abs(left_basis_var))
+    {
+        left_basis_var = make_pivoting_step(matrix, p1s, -left_basis_var);
+    }
+}
+
 function matching_pennies() 
 {
     var matrix = [];
@@ -275,3 +284,5 @@ var prisoners_dilemma = function ()
     matrix.push(arr);
     return matrix;
 };
+
+console.log(solve(prisoners_dilemma()));
