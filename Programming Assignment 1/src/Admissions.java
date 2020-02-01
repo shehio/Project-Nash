@@ -13,6 +13,8 @@ import java.util.stream.DoubleStream;
 public class Admissions extends Tournament<Student, AdmissionsConfig> {
    public static final int numApplications = 10;
 
+   public static int unmatched = 0;
+
    Admissions(List<String> studentNames) {
       super(Student.class, studentNames);
    }
@@ -20,8 +22,14 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
    public static void main(String[] args) throws java.io.FileNotFoundException {
       assert args.length >= 1 : "Expected filename of strategies as first argument";
 
-      final int numTrials = 10;
+      // Raising the value can help on determining the convergence value of a strategy for a given student.
+      final int numTrials = 10000;
+
+      // Uncomment one of them to enable one of the games.
       final AdmissionsConfig config = new AdmissionsConfig(100, 100, 10);
+//      final AdmissionsConfig config = new AdmissionsConfig(100, 0, 10);
+//      final AdmissionsConfig config = new AdmissionsConfig(100, 100, 0);
+
       final BufferedReader namesFile = new BufferedReader(new FileReader(args[0]));
       final List<String> strategyNames =
          namesFile.lines().map(s -> String.format("Student_%s", s)).collect(Collectors.toList());
@@ -34,6 +42,10 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
       for (int i = 0; i != N; ++i) {
          System.out.println(strategyNames.get(i).substring(8) + "," + res[i]);
       }
+
+      // How many of simulations did we not get a match?
+      // Unmatches hurt us severely and thus should be avoided.
+      System.out.println(unmatched);
    }
 
    public double[] runTrial(List<Class<? extends Student>> strategies, AdmissionsConfig config) {
@@ -84,7 +96,8 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
       int[] studentsUnis = matchStudentsWithUnis(
          students.size(),
          studentsPreferences,
-         unisPreferences);
+         unisPreferences,
+         aptitudes);
 
       return calculatePayoffs(
          students.size(),
@@ -211,8 +224,8 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
    private int[] matchStudentsWithUnis(
       int studentsCount,
       int[][] studentsPreferences,
-      ArrayList<ArrayList<Integer>> unisPreferences) {
-
+      ArrayList<ArrayList<Integer>> unisPreferences,
+      double[] aptitudes) {
       // Initially everyone is not matched
       int[] studentsUnis = new int[studentsCount];
       int[] unisStudents = new int[studentsCount];
@@ -234,13 +247,21 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
                } else if (studentPrefersUniMore(
                   studentsPreferences[studentIndex],
                   universityIndex,
-                  studentsUnis[studentIndex]))
-               {
+                  studentsUnis[studentIndex])) {
                   unisStudents[studentsUnis[studentIndex]] = -1;
                   assignStudentToUni(studentsUnis, unisStudents, studentIndex, universityIndex);
                }
             }
          }
+      }
+
+
+      if (studentsUnis[0] == -1) {
+//         In case we want to learn more about which aptitudes make us fail to get a match.
+//         These stats are important.
+//         System.out.println(aptitudes[0]);
+
+         unmatched++;
       }
 
       return studentsUnis;
@@ -251,7 +272,7 @@ public class Admissions extends Tournament<Student, AdmissionsConfig> {
       unisStudents[universityIndex] = studentIndex;
    }
 
-   private boolean studentPrefersUniMore(int[] studentPreferences,  int currentUniIndex, int chosenUniIndex) {
+   private boolean studentPrefersUniMore(int[] studentPreferences, int currentUniIndex, int chosenUniIndex) {
       int currentIndex = Arrays.asList(studentPreferences).indexOf(currentUniIndex);
       int chosenIndex = Arrays.asList(studentPreferences).indexOf(chosenUniIndex);
       return currentIndex < chosenIndex;
