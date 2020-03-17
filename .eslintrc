@@ -2,7 +2,7 @@
     "extends": "eslint:recommended",
     "env": {
         "es6": true,
-        "node": true,
+        // "node": true, @todo: enable this once I've dealt with all console.log's.ß
         "amd": true,
         "jasmine": true,
         "mocha": true

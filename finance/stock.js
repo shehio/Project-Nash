@@ -1,117 +1,78 @@
 const yahoo = require('yahoo-finance');
-const moment = require('moment');
 const math = require('mathjs');
 const models = require('./models.js');
 const mc = require('./../montecarlo/index.js');
-const thousand = 1000;
-const period = 'd';
-const one = 1;
-const year = 'year';
-const format = 'YYYY-MM-DD';
-const symbol = 'GOOGL';
-const from = 'from';
-const to = 'to';
-const l1 = 'l1';
-const mean = 'mean';
-const std = 'std';
 
-// @todo: add some external file for literals.
-
-var get_historical = (symbol, dates, period) => 
+class StockHelper
 {
-  // only because of the lodash isPlainObject in yahoo-finance!
-  let object = {
-    'symbol': symbol,
-    'from': dates.from,
-    'to': dates.to,
-    'period': period
-  };
-  return yahoo.historical(object);
-};
-
-var get_todays = (symbol, fields) => 
-{
-  // only because of the lodash isPlainObject in yahoo-finance!
-  let object = 
+  static getHisoricalPrices(symbol, dates, period)
   {
-    'symbol': symbol,
-    'fields': fields
-  };
-  return yahoo.snapshot(object);
-};
+    let input = {
+      'symbol': symbol,
+      'from': dates.from,
+      'to': dates.to,
+      'period': period
+    };
 
-var preprocess = (quotes) => 
-{
-  quotes = quotes.map((quote) => quote.adjClose);
-  quotes = quotes.map((quote, index) => 
+    return yahoo.historical(input);
+  }
+
+  static getPriceToday(symbol, fields)
   {
-    if (index === 0) 
+    let input = 
     {
-      return 0;
+      'symbol': symbol,
+      'fields': fields
+    };
+
+    return yahoo.snapshot(input);
+  }
+
+  static calculateArithmaticReturnsForAdjClose(quotes)
+  {
+    quotes = quotes.map((quote) => quote.adjClose);
+    quotes = quotes.map((quote, index) => 
+    {
+      if (index === 0) 
+      {
+        return 0;
+      }
+
+      return (quote - quotes[index - 1]) / quote;
+    });
+
+    quotes = quotes.slice(one, quotes.length);
+    return quotes;
+  }
+
+  static calculate_price(sample_size)
+  {
+    if (sample_size == undefined)
+    {
+      sample_size = thousand;
     }
 
-    // ΔS for 1 day.
-    // I have looked around if map provides any spatial object reference (previous/next), couldn't find any.
-    // console.log( `quote = ${quote}, quotes[index - 1] = ${quotes[index - 1]}, delta_s = ${(quote - quotes[index - 1]) / quote}`);
-    return (quote - quotes[index - 1]) / quote;
-  });
+    let generator = Math.random;
+    let estimator_function = _estimate_gbm;
+    return mc.run(sample_size, generator, estimator_function);
+  }
 
-  quotes = quotes.slice(one, quotes.length);
-  return quotes;
-};
+  static getStats(samples)
+  {
+    let stats = {};
+    stats['mean'] = math.mean(samples);
+    stats['std'] = math.std(samples);
+    return stats;
+  }
 
-var calculate_estimators = (array) => 
-{
-  let ret = {};
-  ret[mean] = math.mean(array);
-  ret[std] = math.std(array);
-  return ret;
-};
+  _estimateUsingGBM(random)
+  { 
+    let estimators = estimate();
+    let delta = delta_time();
+    return models.geometric_brownian(estimators, delta, random) * price();
+  }
+}
 
-var calculate_price = () => 
-{
-  let sample_number = thousand;
-  let generator = Math.random;
-  let estimator_function = intermediate;
-  return mc.run(sample_number, generator, estimator_function);
-};
-
-var intermediate = (random) => 
-{ 
-  // @todo: these should change, and bind fields, to the whole Object to be, instead of useless function calls.
-  let estimators = estimate();
-  let delta = delta_time();
-  return models.geometric_brownian(estimators, delta, random) * price();
-};
-
-var experiment = () => 
-{
-  let dates = new Map();
-  dates[to] = moment().format(format);
-  dates[from] = moment().subtract(one, year).calendar(null, { sameElse: format });
-  let fields = [l1];
-  get_todays(symbol, fields).
-    then((snapshot) => module.original_price = snapshot.lastTradePriceOnly).
-    then(() => get_historical(symbol, dates, period)).
-    then((quotes) => preprocess(quotes)).
-    then((data) => calculate_estimators(data)).
-    then((estimators) => module.estimated = estimators).
-    then(() => calculate_price()).
-    then((data => console.log(data))).
-    catch((error) => console.log(error));
-};
-
-// A workaround, in order to keep the simplistic montecarlo implementation.
-var module = {
-  estimated: 0, // to be set.
-  original_price: 0, // to be set.
-  price: function () { return this.original_price; },
-  estimate: function () { return this.estimated; },
-  delta_time: function () { return one; } // one day
-};
-
-let estimate = module.estimate.bind(module);
-let price = module.price.bind(module);
-let delta_time = module.delta_time.bind(module);
-
-experiment();
+module.exports = {
+  StockHelper: StockHelper
+}
