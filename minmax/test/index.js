@@ -1,13 +1,7 @@
 'use strict;';
-const assert = require('assert');
-const expect = require('chai').expect;
-const classes = require('./../../classes.js');
-const Payoff = classes.Payoff;
-const Pair = classes.Pair;
-const Node = classes.Node;
-const nash = require('./../../index.js');
-const mm = require('./../index.js');
-const one = 1;
+const data_models = require('./../../classes.js');
+const Payoff = data_models.Payoff;
+const Node = data_models.Node;
 
 var example = function () {
     var node = new Node();
@@ -17,12 +11,14 @@ var example = function () {
     node.add_child(child);
     return node;
 };
+
 var another_example = function () {
     var node = new Node();
     var child = new Node();
     child.add_child(new Node(new Payoff(4, 5)));
     child.add_child(new Node(new Payoff(3, 2)));
     node.add_child(child);
+
     child = new Node();
     child.add_child(new Node(new Payoff(1, 3)));
     child.add_child(new Node(new Payoff(6, 9)));
@@ -36,12 +32,12 @@ var another_example = function () {
  */
 describe('minmax: ', () => {
     it('works', (done) => {
-        node = example();
+        let node = example();
         done();
     });
 
     it('works again', (done) => {
-        node = another_example();
+        let node = another_example();
         done();
     });
 });

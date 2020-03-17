@@ -4,7 +4,6 @@ const assert = require('assert');
 const expect = require('chai').expect;
 const classes = require('./../classes.js');
 const Payoff = classes.Payoff;
-const Pair = classes.Pair;
 const nash = require('./../index.js');
 
 var matching_pennies = function () 
@@ -19,6 +18,7 @@ var matching_pennies = function ()
 
 describe('matching pennies: ', () => 
 {
+    let matrix = null
     before(() => matrix = matching_pennies());
 
     it('tests check_neighbors', (done) => 

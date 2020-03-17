@@ -1,6 +1,4 @@
-const classes = require('./../classes.js');
-const Payoff = classes.Payoff;
-const Point = classes.Pair;
+const Point = require('./../classes.js').Pair;
 
 var PD = require("probability-distributions");
 var mean = 0;

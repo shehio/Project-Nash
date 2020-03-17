@@ -2,8 +2,7 @@
 'use strict;';
 const assert = require('assert');
 const expect = require('chai').expect;
-const classes = require('./../classes.js');
-const Payoff = classes.Payoff;
+const Payoff = require('./../classes.js').Payoff;
 const nash = require('./../index.js');
 const rows = 2;
 const cols = 2;
@@ -20,6 +19,7 @@ var example = function ()
 
 describe('random example: ', () => 
 {
+    let matrix = null;
     before(() => matrix = example());
 
     it('tests check_neighbors', (done) => 

@@ -1,24 +1,26 @@
-const classes = require('./../../classes.js');
-const Payoff = classes.Payoff;
-const Point = classes.Pair;
+const Point = require('./../../classes.js').Pair;
 const mc = require('./../index.js');
 const zero = 0;
 const one = 1;
 const two = 2;
 const thousand = 1000;
+
 function check_inside(point) {
     if (point === undefined || point === null) {
         throw new Error('point is null, or undefined');
     }
-    var radius = one;
-    var center = new Point(one, one);
-    xc = center.x;
-    yc = center.y;
-    var x = point.x;
-    var y = point.y;
+
+    let radius = one;
+    let center = new Point(one, one);
+    let xc = center.x;
+    let yc = center.y;
+    let x = point.x;
+    let y = point.y;
+
     if ((x - xc) * (x - xc) + (y - yc) * (y - yc) < radius * radius) {
         return one;
     }
+
     return zero;
 }
 

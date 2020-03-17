@@ -1,6 +1,4 @@
-const classes = require('./../classes.js');
 const helpers = require('./helpers.js');
-const Payoff = classes.Payoff;
 const zero = 0;
 const one = 1;
 const two = 2;
@@ -22,7 +20,7 @@ function find_equilibrium(matrix, p1s)
     validate_input(matrix, p1s);
     find_left_basis(matrix, p1s);
 
-    first_column_numbers = [];
+    let first_column_numbers = [];
 
     for (let i of helpers.range(zero, matrix.length, one)) 
     {
@@ -168,6 +166,8 @@ function make_pivoting_step(matrix, p1s, eb_var)
     }
 
     let lb_var = 0;
+    let lb_var_row = 0;
+    let cols = 0;
     let min = Infinity;
     let rows = get_row_nums(eb_var, p1s, matrix);
     let col = var_to_col(eb_var);

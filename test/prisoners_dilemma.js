@@ -2,9 +2,7 @@
 'use strict;';
 const assert = require('assert');
 const expect = require('chai').expect;
-const classes = require('./../classes.js');
-const Payoff = classes.Payoff;
-const Pair = classes.Pair;
+const Payoff = require('./../classes.js').Payoff;
 const nash = require('./../index.js');
 
 var prisoners_dilemma = function () 

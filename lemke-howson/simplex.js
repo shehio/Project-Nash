@@ -1,4 +1,4 @@
-
+// @Todo: Move to a test.
 let cT = new Array(40, 30);
 let A = [];
 A.push(new Array(1, 2));
@@ -10,7 +10,9 @@ var n = A.length + 1;
 var m = A[0].length + n;
 var last_row = n - 1;
 var last_col = m;
-var zero = 0;
+
+const zero = 0;
+
 /**
  * Example according to: https://people.richland.edu/james/ictcm/2006/simplex.html
  */
@@ -64,7 +66,6 @@ function matrix(A, b, cT)
     return ret;
 }
 
-
 function check(matrix) 
 {
     for (let i = 0; i < matrix.length; i++) 
@@ -79,7 +80,6 @@ function check(matrix)
 
 function pivot(matrix) 
 {
-    let zero = 0;
     let min = Infinity;
     let index = 0;
     for (let i = 0; i < matrix.length; i++) 
@@ -95,7 +95,9 @@ function pivot(matrix)
 
 function pick_row(matrix, col) 
 {
-    var ratio = Infinity;
+    let ratio = Infinity;
+    let index = 0;
+
     for (let i = 0; i < n - 1; i++) 
     {
         if (matrix[i][last_col] / matrix[i][col] < ratio) 
@@ -104,6 +106,7 @@ function pick_row(matrix, col)
             ratio = matrix[i][last_col] / matrix[i][col];
         }
     }
+
     return index;
 }
 function scale_row(matrix, row, col) 
