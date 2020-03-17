@@ -1,11 +1,11 @@
-var fs = require('fs');
+const fs = require('fs');
 
 Array.prototype.contains = function (element) 
 {
     return this.indexOf(element) > -1;
 };
 
-var walk = function (dir, ignore) 
+let walk = function (dir, ignore) 
 {
     let results = [];
     let list = fs.readdirSync(dir);
@@ -27,10 +27,9 @@ var walk = function (dir, ignore)
     return results;
 };
 
+let files = walk('.', new Array('.git', '.gitignore', 'LICENSE', 'node_modules', 'package.json', 'todos.js'));
 
-files = walk('.', new Array('.git', '.gitignore', 'LICENSE', 'node_modules', 'package.json', 'todos.js'));
-
-// Assumption as a future practce to end a todo with a full stop (period).
+// Rely on full stops to retrieve todos.
 files.forEach((file) => {
     fs.readFile(file, 'utf8', (err, content) => 
     {

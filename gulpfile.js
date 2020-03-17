@@ -37,7 +37,7 @@ gulp.task('test', gulp.series('eslint', () =>
         }));
 }));
 
-gulp.task('default',  gulp.series(['eslint', 'test'], () => { }));
+gulp.task('default',  gulp.series(['eslint', 'test'], (done) => { done() }));
 
 gulp.task('watch', () => 
 {
