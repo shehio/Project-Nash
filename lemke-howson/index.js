@@ -130,7 +130,6 @@ function create_tableaux(matrix)
         }
     }
     return tableaux;
-
 }
 
 // 2 cols, and -1 to transfer eb_var from 1-based to 0-based
@@ -243,5 +242,8 @@ function find_left_basis(matrix, p1s)
 }
 
 module.exports = {
-    solve: solve
+    solve: solve,
+    create_tableaux: create_tableaux, // Shouldn't be exposed.
+    make_pivoting_step: make_pivoting_step, // Also, shouldn't be exposed.
+    find_equilibrium: find_equilibrium // This one as well.
 };
