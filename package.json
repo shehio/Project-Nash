@@ -20,11 +20,11 @@
   "homepage": "https://github.com/shehio/nash#readme",
   "devDependencies": {
     "chai": "^3.5.0",
-    "gulp": "^3.9.1",
-    "gulp-jshint": "^2.0.1",
+    "gulp": "^4.0.2",
+    "gulp-jshint": "^2.1.0",
     "gulp-mocha": "^3.0.1",
-    "jshint": "^2.9.3",
-    "mocha": "^3.0.2"
+    "jshint": "^2.11.0",
+    "mocha": "^3.5.3"
   },
   "dependencies": {
     "mathjs": "^3.5.3",

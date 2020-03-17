@@ -4,8 +4,9 @@ const expect = require('chai').expect;
 const lh = require('./../index.js');
 const classes = require('./../../classes.js');
 const Payoff = classes.Payoff;
-const Pair = classes.Pair;
+// const Pair = classes.Pair;
 const zero = 0;
+
 describe('range: ', () => 
 {
     it('throws an exception on no arguements', (done) => 
@@ -216,7 +217,7 @@ describe(' make pivoting step: ', () =>
         done();
     });
 
-    it("works thrice", (done) => 
+    it("works three times", (done) => 
     {
         let entering = 
         [
