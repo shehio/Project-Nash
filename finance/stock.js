@@ -96,7 +96,7 @@ var experiment = () =>
     then((quotes) => preprocess(quotes)).
     then((data) => calculate_estimators(data)).
     then((estimators) => module.estimated = estimators).
-    then((estimators) => calculate_price()).
+    then(() => calculate_price()).
     then((data => console.log(data))).
     catch((error) => console.log(error));
 };
