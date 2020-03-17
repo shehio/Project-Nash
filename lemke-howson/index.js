@@ -242,47 +242,6 @@ function find_left_basis(matrix, p1s)
     }
 }
 
-function matching_pennies() 
-{
-    var matrix = [];
-    var arr = [new Payoff(1, -1), new Payoff(-1, 1)];
-    matrix.push(arr);
-    arr = [new Payoff(-1, 1), new Payoff(1, -1)];
-    matrix.push(arr);
-    return matrix;
-}
-
 module.exports = {
     solve: solve
 };
-
-// should be coppied to tests!
-let matrix = matching_pennies();
-matrix = solve(matrix);
-console.log(matrix);
-
-matrix = 
-        [
-            [new Payoff(1,1)]
-        ];
-console.log(solve(matrix));
-
-matrix = 
-    [
-    [new Payoff(1,2),new Payoff(3,1),new Payoff(0,0) ],
-    [new Payoff(0,1),new Payoff(0,3),new Payoff(2,1)],
-    [new Payoff(2,0), new Payoff(1,0), new Payoff(1,3)]
-    ];
-console.log(solve(matrix));
-
-var prisoners_dilemma = function () 
-{
-    var matrix = [];
-    var arr = [new Payoff(-1, -1), new Payoff(-10, 0)];
-    matrix.push(arr);
-    arr = [new Payoff(0, -10), new Payoff(-5, -5)];
-    matrix.push(arr);
-    return matrix;
-};
-
-console.log(solve(prisoners_dilemma()));
