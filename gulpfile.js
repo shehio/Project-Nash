@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 const mocha = require('gulp-mocha');
-const eslint = require('gulp-eslint');
+const lint = require('gulp-eslint');
 
 const sources = 
 [
@@ -21,14 +21,14 @@ const tests =
     './montecarlo/test/*.js'
 ];
 
-gulp.task('eslint', () => 
+gulp.task('lint', () => 
 {
     return gulp.src(sources)
-        .pipe(eslint({}))
-        .pipe(eslint.format());
+        .pipe(lint({}))
+        .pipe(lint.format());
 });
 
-gulp.task('test', gulp.series('eslint', () => 
+gulp.task('test', gulp.series('lint', () => 
 {
     return gulp.src(tests, { read: false })
         .pipe(mocha({
@@ -37,13 +37,13 @@ gulp.task('test', gulp.series('eslint', () =>
         }));
 }));
 
-gulp.task('default',  gulp.series(['eslint', 'test'], (done) => { done() }));
+gulp.task('default',  gulp.series(['lint', 'test'], (done) => { done() }));
 
 gulp.task('watch', () => 
 {
     gulp.watch(sources, () => 
     {
-        gulp.run('eslint');
+        gulp.run('lint');
         gulp.run('test');
     });
 });

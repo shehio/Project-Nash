@@ -1,24 +1,18 @@
 const Point = require('./../classes.js').Pair;
 
-var PD = require("probability-distributions");
-var mean = 0;
-var sd = 1;
+let PD = require("probability-distributions");
+let mean = 0;
+let sd = 1;
 
 function run(sample_number, probability_distribution, estimator_function) 
 {
-    var n = sample_number;
-    var p = probability_distribution;
-    var f = estimator_function;
+    let miu = 0;
 
-    var miu = 0;
-    var data = [];
-
-    for (let i = 0; i < n; i++) {
-        miu = miu + f(p());
+    for (let i = 0; i < sample_number; i++) {
+        miu = miu + estimator_function(probability_distribution());
     }
 
-    miu = miu / n;
-    return miu;
+    return miu / sample_number;
 }
 
 function random_point(dimension) 

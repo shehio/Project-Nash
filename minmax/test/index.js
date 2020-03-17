@@ -32,12 +32,12 @@ var another_example = function () {
  */
 describe('minmax: ', () => {
     it('works', (done) => {
-        let node = example();
+        example();
         done();
     });
 
     it('works again', (done) => {
-        let node = another_example();
+        another_example();
         done();
     });
 });
