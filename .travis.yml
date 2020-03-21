@@ -1,6 +1,8 @@
 language: node_js
+dist: bionic
 node_js:
   - "12"
 before_script:
-  - npm install -g gulp
+  - sudo apt-get install libxml2-dev
+  - npm install
 script: gulp
