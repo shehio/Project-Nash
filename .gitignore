@@ -1,3 +1,6 @@
 .DS_Store
 node_modules/
 .vscode/
+.idea/
+Project-Nash.iml
+package-lock.json

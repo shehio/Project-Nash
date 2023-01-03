@@ -2,7 +2,7 @@
 const assert = require('assert');
 const expect = require('chai').expect;
 const lh = require('./../index.js');
-const classes = require('./../../classes.js');
+const classes = require('../../types.js');
 const Payoff = classes.Payoff;
 const zero = 0;
 

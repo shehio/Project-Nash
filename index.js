@@ -1,5 +1,5 @@
 'use strict;';
-const classes = require('./classes.js');
+const classes = require('./types.js');
 const Pair = classes.Pair;
 const rows = 2;
 const cols = 2;
@@ -24,8 +24,9 @@ function find_pure(matrix)
 
 /**
  *  As always, player one is represented by x in (x,y) coordinates, 
- *  and his/her choices is represented vertically.
- *  The exact opposite for player two.
+ *  and their choices are represented vertically.
+ *  Player two is represented by y in (x,y) coordinates,
+ *  and their choices are represented horizontally.
  */
 function check_neighbors(matrix, row, col) 
 {
