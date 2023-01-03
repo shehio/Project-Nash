@@ -2,7 +2,7 @@
 'use strict;';
 const assert = require('assert');
 const expect = require('chai').expect;
-const Payoff = require('./../classes.js').Payoff;
+const Payoff = require('../types.js').Payoff;
 const nash = require('./../index.js');
 const rows = 2;
 const cols = 2;

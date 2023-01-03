@@ -1,4 +1,4 @@
-const Point = require('./../../classes.js').Pair;
+const Point = require('../../types.js').Pair;
 const mc = require('./../index.js');
 const zero = 0;
 const one = 1;

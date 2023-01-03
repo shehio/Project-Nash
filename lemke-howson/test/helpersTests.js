@@ -2,7 +2,7 @@
 const assert = require('assert');
 const expect = require('chai').expect;
 const helpers = require('./../helpers.js');
-const Payoff = require('./../../classes.js').Payoff;
+const Payoff = require('../../types.js').Payoff;
 const zero = 0;
 
 describe('range: ', () => 

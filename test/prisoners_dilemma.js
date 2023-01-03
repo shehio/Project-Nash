@@ -1,11 +1,9 @@
-/*jshint expr: true*/
-'use strict;';
 const assert = require('assert');
 const expect = require('chai').expect;
-const Payoff = require('./../classes.js').Payoff;
+const Payoff = require('../types.js').Payoff;
 const nash = require('./../index.js');
 
-var prisoners_dilemma = function () 
+const prisoners_dilemma = function ()
 {
     let matrix =
         [
