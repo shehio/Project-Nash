@@ -1,11 +1,13 @@
-# Project Nash
+<h1 align="center"> Project-Nash </h1>
 
-<div align="center">
-<img src="https://i.ibb.co/5L5ttM0/Russell-Crowe-Jennifer-Connelly-A-Beautiful-Mind-2001.webp" alt="Russell-Crowe-Jennifer-Connelly-A-Beautiful-Mind-2001">
 
-I watched the movie *A Beautiful Mind* when I was young, and it has had a lasting effect on me.
-</div>
+<figure>
+  <img src="https://i.ibb.co/5L5ttM0/Russell-Crowe-Jennifer-Connelly-A-Beautiful-Mind-2001.webp" alt="Russell-Crowe-Jennifer-Connelly-A-Beautiful-Mind-2001" style="width:100%">
+  <figcaption>I watched the movie <i> A Beautiful Mind </i> when I was young, and it has had a lasting effect on me.</figcaption>
+</figure>
 
+
+## FAQ
 #### Why is this repo called Project Nash?
 It's named after [John Nash](https://en.wikipedia.org/wiki/John_Forbes_Nash_Jr).
 
@@ -19,11 +21,11 @@ Developers interested in game theory, econometrics, Monte Carlo simulations, and
 This Repo is merely educational, although I mean to improve it since my skills have developed over time.
 
 #### What is some code in this repo?
-- Obtain Nash Equilibria for simultaneous/sequential games.
-- Simplistic montecarlo simulations
-- Time series analysis
+- Nash Equilibrium for simultaneous/sequential games.
+- Monte Carlo simulations
 - Simplex
 - Minimax
+- Time series analysis
 
 #### What is the philosophy of this repo?
 Since all the code in this repo is for education and fulfillment purposes, I prefer clarity to unnecessary optimizations.
