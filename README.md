@@ -1,14 +1,25 @@
 # Project Nash
-<img src="https://i.ibb.co/ss3ttXH/a-beautiful-mind-john-nash.jpg" height="700" width="460" >
 
-I watched the movie *A Beautiful Mind* when I was young, and it has had a lasting effect on me.
+### Why is this repo called Project Nash?
+It's named after [John Nash](https://en.wikipedia.org/wiki/John_Forbes_Nash_Jr). I watched the movie *A Beautiful Mind* when I was young, and it has had a lasting effect on me.
 
-I started this repo in 2016 and have worked on it for the most part during the first couple of years. Over the years, I've picked up other interests, but my interest in Game Theory has only increased. This code is merely educational, although I mean to improve it since my skills have developed over time.
+### What's the history of this repo?
+I started this repo in 2016 and have worked on it for the most part during the first couple of years.
 
+### Who is this repo for?
+Developers interested in game theory, econometrics, Monte Carlo simulations, and financial engineering.
 
-## What is the story behind Project Nash?
-I wrote some code to obtain Nash Equilibria for simultaneous/sequential games. I kept augmenting the repo with simplistic montecarlo simulations, time series analysis, and linear programming methods over time.
-The repo is replete with novice programmers' mistakes. However, as I'm getting better in design and my interests are honed, I will contribute back to it again.
-The philosophy behind the simplicity of the code in this repo is: Since all the code in this repo is for education and fulfillment purposes, I prefer clarity over unnecessary optimizations.
+### What are the future plans for this repo?
+This Repo is merely educational, although I mean to improve it since my skills have developed over time.
+
+### What is some code in this repo?
+- Obtain Nash Equilibria for simultaneous/sequential games.
+- Simplistic montecarlo simulations
+- Time series analysis
+- Simplex
+- Minimax
+
+### What is the philosophy of this repo?
+Since all the code in this repo is for education and fulfillment purposes, I prefer clarity to unnecessary optimizations.
 
 
