@@ -1,7 +1,11 @@
 # Project Nash
 
 ### Why is this repo called Project Nash?
+
+<div align="center">
+<img src="https://i.ibb.co/5L5ttM0/Russell-Crowe-Jennifer-Connelly-A-Beautiful-Mind-2001.webp" alt="Russell-Crowe-Jennifer-Connelly-A-Beautiful-Mind-2001" border="0">
 It's named after [John Nash](https://en.wikipedia.org/wiki/John_Forbes_Nash_Jr). I watched the movie *A Beautiful Mind* when I was young, and it has had a lasting effect on me.
+</div>
 
 ### What's the history of this repo?
 I started this repo in 2016 and have worked on it for the most part during the first couple of years.
