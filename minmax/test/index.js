@@ -1,5 +1,5 @@
 'use strict;';
-const data_models = require('../../types.js');
+const data_models = require('../../src/types.js');
 const Payoff = data_models.Payoff;
 const Node = data_models.TreeNode;
 

@@ -1,4 +1,4 @@
-const Point = require('../types.js').Pair;
+const Point = require('../src/types.js').Pair;
 
 let PD = require("probability-distributions");
 let mean = 0;

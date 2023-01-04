@@ -1,5 +1,5 @@
-import { Payoff } from "../types";
-import { check_neighbors, find_pure_strategy_payoff, find_mixed_strategy_payoff  } from "../index";
+import { Payoff } from "../src/types";
+import { check_neighbors, find_pure_strategy_payoff, find_mixed_strategy_payoff  } from "../src/index";
 
 const matching_pennies = function () {
     const matrix = new Array();
