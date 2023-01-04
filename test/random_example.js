@@ -1,5 +1,3 @@
-/*jshint expr: true*/
-'use strict;';
 const assert = require('assert');
 const expect = require('chai').expect;
 const Payoff = require('../types.js').Payoff;
@@ -39,7 +37,7 @@ describe('random example: ', () =>
 
     it('doesnt have a pure nash equilibrium', done => 
     {
-        let pure = nash.find_pure(matrix);
+        let pure = nash.find_pure_strategy_payoff(matrix);
         expect(pure).to.not.be.undefined;
         expect(pure).to.not.be.null;
         expect(pure).to.be.a('Array');
@@ -52,7 +50,7 @@ describe('random example: ', () =>
         // @todo: change the extremely error prone decimals, to nearly equal.
         let p1_expected = { p: 0.16666666666666666, average_payoff: 0.33333333333333337 };
         let p2_expected = { p: 0.3333333333333333, average_payoff: -0.3333333333333335 };
-        let mixed = nash.find_mixed(matrix);
+        let mixed = nash.find_mixed_strategy_payoff(matrix);
         expect(mixed).to.not.be.null;
         expect(mixed).to.not.be.undefined;
         expect(mixed).to.be.a('Array');

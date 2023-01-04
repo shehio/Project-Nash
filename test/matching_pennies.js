@@ -34,7 +34,7 @@ describe('matching pennies', () =>
 
     it('does not have a pure nash equilibrium', done =>
     {
-        const pure = nash.find_pure(matrix);
+        const pure = nash.find_pure_strategy_payoff(matrix);
         validateArray(matrix);
         done();
     });
@@ -42,7 +42,7 @@ describe('matching pennies', () =>
     it('has mixed nash equilibrium', done => 
     {
         const expected = {p: 0.5, average_payoff: 0};
-        const mixed = nash.find_mixed(matrix);
+        const mixed = nash.find_mixed_strategy_payoff(matrix);
         validateArray(mixed);
         expect(mixed).to.have.lengthOf(2);
 

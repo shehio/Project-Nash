@@ -1,6 +1,5 @@
 <h1 align="center"> Project-Nash </h1>
 
-
 <figure>
   <img src="https://i.ibb.co/5L5ttM0/Russell-Crowe-Jennifer-Connelly-A-Beautiful-Mind-2001.webp" alt="Russell-Crowe-Jennifer-Connelly-A-Beautiful-Mind-2001" style="width:100%">
   <figcaption>I watched the movie <i> A Beautiful Mind </i> when I was young, and it has had a lasting effect on me.</figcaption>
