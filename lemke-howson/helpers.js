@@ -1,4 +1,4 @@
-const classes = require('../types.js');
+const classes = require('../src/types.js');
 const Payoff = classes.Payoff;
 const zero = 0;
 const one = 1;

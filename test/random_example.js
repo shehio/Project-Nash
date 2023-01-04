@@ -1,7 +1,7 @@
 const assert = require('assert');
 const expect = require('chai').expect;
-const Payoff = require('../types.js').Payoff;
-const nash = require('./../index.js');
+const Payoff = require('../src/types.js').Payoff;
+const nash = require('../src/index.js');
 const rows = 2;
 const cols = 2;
 

@@ -2,22 +2,6 @@ import { Pair } from './types'
 const rows = 2;
 const cols = 2;
 
-export function find_pure_strategy_payoff(matrix)
-{
-    var pure = new Array();
-    for (var i = 0; i < rows; ++i) 
-    {
-        for (var j = 0; j < cols; ++j) 
-        {
-            if (check_neighbors(matrix, i, j)) 
-            {
-                pure.push(new Pair(i, j));
-            }
-        }
-    }
-    return pure;
-}
-
 /**
  *  As always, player one is represented by x in (x,y) coordinates, 
  *  and their choices are represented vertically.
@@ -29,12 +13,23 @@ export function check_neighbors(matrix, row, col)
     let vertical = 1 - row;
     let horizontal = 1 - col;
     let current = matrix[row][col];
-    return (current.ltv(matrix[vertical][col]) &&
-         current.lth(matrix[row][horizontal]));
+    return (current.ltv(matrix[vertical][col]) && current.lth(matrix[row][horizontal]));
 }
 
-export function find_mixed_strategy_payoff(matrix) 
-{
+
+export function find_pure_strategy_payoff(matrix) {
+    var pure = new Array();
+    for (var i = 0; i < rows; ++i) {
+        for (var j = 0; j < cols; ++j) {
+            if (check_neighbors(matrix, i, j)) {
+                pure.push(new Pair(i, j));
+            }
+        }
+    }
+    return pure;
+}
+
+export function find_mixed_strategy_payoff(matrix) {
     var mixed = new Array();
     let r1c1 = matrix[0][0];
     let r1c2 = matrix[0][1];
