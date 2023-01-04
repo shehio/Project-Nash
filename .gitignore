@@ -4,3 +4,4 @@ node_modules/
 .idea/
 Project-Nash.iml
 package-lock.json
+built/
