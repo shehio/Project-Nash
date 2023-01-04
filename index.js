@@ -3,8 +3,6 @@ const Pair = classes.Pair;
 const rows = 2;
 const cols = 2;
 
-// Strive for no side effects.
-
 function find_pure_strategy_payoff(matrix)
 {
     var pure = [];
