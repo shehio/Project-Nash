@@ -1,6 +1,7 @@
 const gulp = require('gulp');
 const mocha = require('gulp-mocha');
 const lint = require('gulp-eslint');
+const ts = require('gulp-typescript');
 
 const sources = 
 [
@@ -10,6 +11,16 @@ const sources =
     './lemke-howson/**/*.js',
     './minmax/**/*.js',
     './montecarlo/**/*.js'
+];
+
+const tsSources = 
+[
+    './*.ts',
+    './test/*.ts',
+    './finance/**/*.ts',
+    './lemke-howson/**/*.ts',
+    './minmax/**/*.ts',
+    './montecarlo/**/*.ts'
 ];
 
 const tests = 
@@ -28,6 +39,16 @@ gulp.task('lint', () =>
         .pipe(lint.format());
 });
 
+gulp.task('tsx', () => 
+{
+    return gulp.src(tsSources)
+        .pipe(ts({
+            noImplicitAny: false
+        }))
+        .pipe(gulp.dest('built/local'));
+
+});
+
 gulp.task('test', gulp.series('lint', () => 
 {
     return gulp.src(tests, { read: false })
@@ -37,7 +58,7 @@ gulp.task('test', gulp.series('lint', () =>
         }));
 }));
 
-gulp.task('default',  gulp.series(['lint', 'test'], (done) => { done() }));
+gulp.task('default',  gulp.series(['lint', 'tsx', 'test'], (done) => { done() }));
 
 gulp.task('watch', () => 
 {
