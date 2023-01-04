@@ -1,68 +1,82 @@
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+exports.__esModule = true;
+exports.TreeNode = exports.Payoff = exports.Pair = void 0;
 // @todo: Add support for n number of points.
-const Pair = class {
-    constructor(x, y) {
+exports.Pair = /** @class */ (function () {
+    function class_1(x, y) {
         if (arguments.length == 1) {
             if (Array.isArray(x)) {
                 this.x = x[0];
                 this.y = x[1];
-            } else {
+            }
+            else {
                 this.x = x;
             }
-        } else {
+        }
+        else {
             this.x = x;
             this.y = y;
         }
     }
-
-    toString() {
-        return `(${this.x}, ${this.y})`;
-    }
-};
-
+    class_1.prototype.toString = function () {
+        return "(".concat(this.x, ", ").concat(this.y, ")");
+    };
+    return class_1;
+}());
 /**
  *  You can implicitly substitute x for player_one's payoff,
  *  and y for player_two's payoff.
  */
-const Payoff = class extends Pair {
+exports.Payoff = /** @class */ (function (_super) {
+    __extends(Payoff, _super);
+    function Payoff() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     // lth: larger_than_horizontal
-    lth(other) {
+    Payoff.prototype.lth = function (other) {
         return (this.y > other.y);
-    }
-
+    };
     // ltv: larger than vertical
-    ltv(other) {
+    Payoff.prototype.ltv = function (other) {
         return (this.x > other.x);
-    }
-};
-
+    };
+    return Payoff;
+}(exports.Pair));
 /**
  *  Assume that only a leaf node can have a value.
  *  An intermediate decision node doesn't cary a value.
  */
-const Node = class {
-    constructor(value) {
+exports.TreeNode = /** @class */ (function () {
+    function class_2(value) {
         this.value = value;
         this.children = [];
     }
-
-    add_child(child) {
+    class_2.prototype.add_child = function (child) {
         this.children.push(child);
-    }
-
-    is_leaf() {
+    };
+    class_2.prototype.is_leaf = function () {
         return (this.children.length === 0);
-    }
-
-    value(player) {
+    };
+    class_2.prototype.get_value = function (player) {
         if (player == 1) {
             return this.value.x;
         }
         return this.value.y;
-    }
-};
-
-module.exports = {
-    Payoff: Payoff,
-    Pair: Pair,
-    Node: Node
-};
+    };
+    return class_2;
+}());

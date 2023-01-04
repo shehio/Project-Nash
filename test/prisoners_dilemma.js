@@ -30,13 +30,13 @@ describe('prisoners dilemma: ', () =>
 
     it('has a pure nash equilibrium', done => 
     {
-        let expected = { x: 1, y: 1 };
         let pure = nash.find_pure_strategy_payoff(matrix);
         expect(pure).to.not.be.undefined;
         expect(pure).to.not.be.null;
         expect(pure).to.be.a('Array');
         expect(pure).to.not.be.empty;
-        expect(pure.shift()).to.eql(expected);
+        expect(pure[0].x).to.eql(1);
+        expect(pure[0].y).to.eql(1);
         done();
     });
 });
