@@ -1,4 +1,3 @@
-'use strict;';
 const classes = require('./types.js');
 const Pair = classes.Pair;
 const rows = 2;
@@ -6,7 +5,7 @@ const cols = 2;
 
 // Strive for no side effects.
 
-function find_pure(matrix) 
+function find_pure_strategy_payoff(matrix)
 {
     var pure = [];
     for (var i = 0; i < rows; ++i) 
@@ -37,7 +36,7 @@ function check_neighbors(matrix, row, col)
          current.lth(matrix[row][horizontal]));
 }
 
-function find_mixed(matrix) 
+function find_mixed_strategy_payoff(matrix) 
 {
     let mixed = [];
     let r1c1 = matrix[0][0];
@@ -47,11 +46,11 @@ function find_mixed(matrix)
 
     // p: probability that player one plays his/her first choice.
     let p = (r2c2.y - r2c1.y) / (r1c1.y + r2c2.y - r2c1.y - r1c2.y);
-    let p1_average_payoff = r1c1.y * p + (1 - p) * r2c1.y; // or r1c2.y * p + (1 - p)  *r2c2.y
+    let p1_average_payoff = r1c1.y * p + (1 - p) * r2c1.y; // or r1c2.y * p + (1 - p)  * r2c2.y
 
     // q: probability that player two plays his/her first choice.
     let q = (r2c2.x - r1c2.x) / (r1c1.x + r2c2.x - r2c1.x - r1c2.x);
-    let p2_average_payoff = r1c1.x * q + (1 - q) * r1c2.x; // or r2c1.x * p + (1 - p)  *r2c2.x
+    let p2_average_payoff = r1c1.x * q + (1 - q) * r1c2.x; // or r2c1.x * p + (1 - p)  * r2c2.x
 
     mixed.push({ p: p, average_payoff: p1_average_payoff });
     mixed.push({ p: q, average_payoff: p2_average_payoff });
@@ -62,6 +61,6 @@ function find_mixed(matrix)
 
 module.exports = {
     check_neighbors: check_neighbors,
-    find_pure: find_pure,
-    find_mixed: find_mixed
+    find_pure_strategy_payoff: find_pure_strategy_payoff,
+    find_mixed_strategy_payoff: find_mixed_strategy_payoff
 };
