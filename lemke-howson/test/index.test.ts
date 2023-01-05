@@ -1,28 +1,12 @@
-'use strict;';
-const assert = require('assert');
-const expect = require('chai').expect;
-const lh = require('./../index.js');
-const classes = require('../../types.js');
-const Payoff = classes.Payoff;
+import { Payoff } from '../../src/types'
+import { create_tableaux, make_pivoting_step, solve, find_equilibrium } from '../index'
+import { normalize_equilibrium } from '../helpers'
 const zero = 0;
 
 
 describe('create tableau: ', () => 
 {
-    it('throws an error on empty arguements', (done) => 
-    {
-        assert.throws(function () { lh.create_tableaux(); }, Error, 'matrix is null, or not an array.');
-        done();
-    });
-
-    it('throws an error on non array arguements', (done) => 
-    {
-        assert.throws(function () { lh.create_tableaux(zero); }, Error, 'matrix is null, or not an array.');
-        done();
-    });
-
-    it('works', (done) => 
-    {
+    it('works', () => {
         let expected = 
         [
             [-1, 1, 0, 0, -2, 0],
@@ -35,12 +19,11 @@ describe('create tableau: ', () =>
             [new Payoff(2, 0), new Payoff(0, 2)],
             [new Payoff(0, 2), new Payoff(2, 0)]
         ];
-        let generated = lh.create_tableaux(intermediate);
-        expect(generated).to.be.eql(expected);
-        done();
+        let generated = create_tableaux(intermediate);
+        expect(generated).toEqual(expected);
     });
 
-    it('works again', (done) => 
+    it('works again', () => 
     {
         let expected = 
         [
@@ -57,15 +40,15 @@ describe('create tableau: ', () =>
             [new Payoff(0, 1), new Payoff(0, 3), new Payoff(2,1)],
             [new Payoff(2, 0), new Payoff(1, 0), new Payoff(1,3)]
         ];
-        let generated = lh.create_tableaux(intermediate);
-        expect(generated).to.be.eql(expected);
-        done();
+        let generated = create_tableaux(intermediate);
+        expect(generated).toEqual(expected);
+        
     });
 });
 
 describe(' make pivoting step: ', () => 
 {
-    it('works', (done) => 
+    it('works', () => 
     {
         let entering = [
             [-1, 1, 0, 0, -2, 0],
@@ -83,15 +66,15 @@ describe(' make pivoting step: ', () =>
         let p1s = 2;
         let expected_lb = -4;
 
-        let actual = lh.make_pivoting_step(entering, p1s, eb_var);
-        expect(entering).to.be.eql(expected_matrix);
-        expect(actual).to.be.eql(expected_lb);
+        let actual = make_pivoting_step(entering, p1s, eb_var);
+        expect(entering).toEqual(expected_matrix);
+        expect(actual).toEqual(expected_lb);
 
-        done();
+        
     });
     
      // @todo: find a better way to handle percision.
-    it('works again', (done) => 
+    it('works again', () => 
     {
         let entering = 
         [
@@ -111,14 +94,14 @@ describe(' make pivoting step: ', () =>
         let p1s = 2;
         let expected_lb = -4;
 
-        let actual = lh.make_pivoting_step(entering, p1s, eb_var);
-        expect(entering).to.be.eql(expected_matrix);
-        expect(actual).to.be.eql(expected_lb);
+        let actual = make_pivoting_step(entering, p1s, eb_var);
+        expect(entering).toEqual(expected_matrix);
+        expect(actual).toEqual(expected_lb);
 
-        done();
+        
     });
 
-    it("works three times", (done) => 
+    it("works three times", () => 
     {
         let entering = 
         [
@@ -139,17 +122,17 @@ describe(' make pivoting step: ', () =>
         let p1s = 2;
         let expected_lb = -2;
 
-        let actual = lh.make_pivoting_step(entering, p1s, eb_var);
-        expect(entering).to.be.eql(expected_matrix);
-        expect(actual).to.be.eql(expected_lb);
+        let actual = make_pivoting_step(entering, p1s, eb_var);
+        expect(entering).toEqual(expected_matrix);
+        expect(actual).toEqual(expected_lb);
 
-        done();
+        
     });
 });
 
 describe(' find equilibrium: ', () => 
 {
-    xit('works', (done) => 
+    xit('works', () => 
     {
         let matrix = 
         [
@@ -164,12 +147,12 @@ describe(' find equilibrium: ', () =>
             [ 0.25, 0.6666666666666666]
         ];
         let p1s = 2;
-        let actual = lh.find_equilibrium(matrix, p1s);
-        expect(actual).to.be.eql(expected);
-        done();
+        let actual = find_equilibrium(matrix, p1s);
+        expect(actual).toEqual(expected);
+        
     });
 
-    xit('works again', (done) => 
+    xit('works again', () => 
     {
         let matrix = 
         [
@@ -187,15 +170,15 @@ describe(' find equilibrium: ', () =>
             [4/15, 1/2]
         ];
         let p1s = 3;
-        let actual = lh.find_equilibrium(matrix, p1s);
-        expect(actual).to.be.eql(expected);
-        done();
+        let actual = find_equilibrium(matrix, p1s);
+        expect(actual).toEqual(expected);
+        
     });
 });
 
 describe(' normalize equilibrium: ', () => 
 {
-    xit('works', (done) => 
+    xit('works', () => 
     {
         let matrix = 
         [
@@ -207,15 +190,15 @@ describe(' normalize equilibrium: ', () =>
             [6/13, 3/13, 0.30769230769230765],
             [0.11111111111111112, 3/9, 5/9   ]
         ];
-        let actual = lh.normalize_equilibrium(matrix);
-        expect(actual).to.be.eql(expected);
-        done();
+        let actual = normalize_equilibrium(matrix);
+        expect(actual).toEqual(expected);
+        
     });
 });
 
 describe(' solve: ', () => 
 {
-    xit('works', (done) => 
+    xit('works', () => 
     {
         let matrix = 
         [
@@ -225,8 +208,8 @@ describe(' solve: ', () =>
         [
             [1, 1]
         ];
-        let actual = lh.solve(matrix);
-        expect(actual).to.be.eql(expected);
-        done();
+        let actual = solve(matrix);
+        expect(actual).toEqual(expected);
+        
     });
 });

@@ -1,33 +1,33 @@
-const helpers = require('./helpers.js');
+import { normalize_equilibrium, range, normalize_matrices } from './helpers'
+
 const zero = 0;
 const one = 1;
 const two = 2;
 
-function solve(matrix) 
-{
+export function solve(matrix) {
     let p1s = matrix.length;
 
-    matrix = helpers.normalize_matrices(matrix);
+    matrix = normalize_matrices(matrix);
     matrix = create_tableaux(matrix);
     
     matrix = find_equilibrium(matrix, p1s);
-    matrix = helpers.normalize_equilibrium(matrix);
+    matrix = normalize_equilibrium(matrix);
+
     return matrix;
 }
 
-function find_equilibrium(matrix, p1s) 
-{
+export function find_equilibrium(matrix, p1s) {
     validate_input(matrix, p1s);
     find_left_basis(matrix, p1s);
 
     let first_column_numbers = [];
 
-    for (let i of helpers.range(zero, matrix.length, one)) 
+    for (let i of range(zero, matrix.length, one)) 
     {
         first_column_numbers.push(Math.abs(matrix[i][zero]));
     }
 
-    for (let i of helpers.range(zero, matrix.length, one)) 
+    for (let i of range(zero, matrix.length, one)) 
     {
         if (!(i in first_column_numbers)) 
         {
@@ -36,7 +36,7 @@ function find_equilibrium(matrix, p1s)
     }
     
     let eqs = [];
-    for (let i of helpers.range(zero, matrix.length, one)) 
+    for (let i of range(zero, matrix.length, one)) 
     {
         let strategy = Math.abs(matrix[i][zero]);
         let probability = matrix[i][one];
@@ -66,15 +66,8 @@ function find_equilibrium(matrix, p1s)
     return c;
 }
 
-function create_tableaux(matrix)
-{
-    if (!matrix) 
-    {
-        throw new Error("matrix is null");
-    }
-
-    if (matrix.length === 0) 
-    {
+export function create_tableaux(matrix) {
+    if (matrix.length === 0) {
         throw new Error("matrix is empty.");
     }
 
@@ -86,43 +79,34 @@ function create_tableaux(matrix)
     let tableaux = new Array(strategies);
     
     // initialize every row: an array of (S+2) zeros
-    for (let i = 0; i < tableaux.length; i++) 
-    {
+    for (let i = 0; i < tableaux.length; i++) {
         tableaux[i] = Array.apply(null, Array(strategies + 2)).map(Number.prototype.valueOf, 0);
     }
 
     // indexing every column by it's negative index
-    for (let i = 0; i < tableaux.length; i++) 
-    {
+    for (let i = 0; i < tableaux.length; i++) {
         tableaux[i][zero] = - (i + 1);
     }
     
     // second column should all be ones
-    for (let i = 0; i < tableaux.length; i++) 
-    {
+    for (let i = 0; i < tableaux.length; i++) {
         tableaux[i][one] = one;
     }
 
-    for (let i = 0; i < matrix.length; i++) 
-    {
-        for (let j = 0; j < matrix[0].length; j++) 
-        {
+    for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix[0].length; j++) {
             // avoiding negative zeros, it was failing the tests.
-            if (matrix[i][j].y === 0) 
-            {
+            if (matrix[i][j].y === 0) {
                 tableaux[j + p1s][i + two] = 0;
             }
-            else
-            {
+            else {
                 tableaux[j + p1s][i + two] = - matrix[i][j].y;
             }
 
-            if (matrix[i][j].x === 0) 
-            {
+            if (matrix[i][j].x === 0) {
                 tableaux[i][j + two + p1s] = 0;
             }
-            else 
-            {
+            else {
                 tableaux[i][j + two + p1s] = - matrix[i][j].x;
             }
         }
@@ -133,17 +117,16 @@ function create_tableaux(matrix)
 // 2 cols, and -1 to transfer eb_var from 1-based to 0-based
 var var_to_col = (x) => Math.abs(x) + 2 - 1;
 
-function get_row_nums(x, p1s, matrix) 
-{
-    if (-p1s <= x < 0 || x > p1s) 
+export function get_row_nums(x, p1s, matrix) {
+    if ((-p1s <= x && x < 0) || x > p1s) 
     {
-        return helpers.range(0, p1s);
+        return range(0, p1s);
     }
 
     // If it's negative and less, or positive and less. or equals.
     else 
     {
-        return helpers.range(p1s, matrix.length);
+        return range(p1s, matrix.length);
     }
 }
 
@@ -151,7 +134,7 @@ function get_row_nums(x, p1s, matrix)
 *  @todo: change this to return the modified matrix as well!
 *  Remember immutability.
 */
-function make_pivoting_step(matrix, p1s, eb_var) 
+export function make_pivoting_step(matrix, p1s, eb_var) 
 {
     // If entering var is more or equal zero, or the entering is more than the rows.
     if (Math.abs(eb_var) <= 0 || Math.abs(eb_var) > matrix.length)
@@ -167,7 +150,7 @@ function make_pivoting_step(matrix, p1s, eb_var)
 
     let lb_var = 0;
     let lb_var_row = 0;
-    let cols = 0;
+    let cols = [];
     let min = Infinity;
     let rows = get_row_nums(eb_var, p1s, matrix);
     let col = var_to_col(eb_var);
@@ -192,7 +175,7 @@ function make_pivoting_step(matrix, p1s, eb_var)
     matrix[lb_var_row][var_to_col(eb_var)] = zero;
     matrix[lb_var_row][var_to_col(lb_var)] = -one;
 
-    cols = helpers.range(1, matrix[0].length);
+    cols = range(1, matrix[0].length);
     lb_varCoeff = Math.abs(lb_varCoeff);
 
     for (let i of cols) 
@@ -204,7 +187,7 @@ function make_pivoting_step(matrix, p1s, eb_var)
     {
         if (matrix[i][col] !== 0) 
         {
-            for (let j of helpers.range(1, matrix[0].length)) 
+            for (let j of range(1, matrix[0].length)) 
             {
                 matrix[i][j] = matrix[i][j] + matrix[i][col] * matrix[lb_var_row][j];
             }
@@ -215,8 +198,7 @@ function make_pivoting_step(matrix, p1s, eb_var)
     return lb_var;
 }
 
-function validate_input(matrix, p1s)
-{
+export function validate_input(matrix, p1s) {
     if (p1s < zero) 
     {
         throw ('Invalid number of strategies for player 1.');
@@ -228,8 +210,7 @@ function validate_input(matrix, p1s)
     }
 }
 
-function find_left_basis(matrix, p1s)
-{
+export function find_left_basis(matrix, p1s) {
     let init_basis_var = one;
     let left_basis_var = 0;
     
@@ -240,10 +221,3 @@ function find_left_basis(matrix, p1s)
         left_basis_var = make_pivoting_step(matrix, p1s, -left_basis_var);
     }
 }
-
-module.exports = {
-    solve: solve,
-    create_tableaux: create_tableaux, // Shouldn't be exposed.
-    make_pivoting_step: make_pivoting_step, // Also, shouldn't be exposed.
-    find_equilibrium: find_equilibrium // This one as well.
-};
