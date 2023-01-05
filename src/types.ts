@@ -42,10 +42,15 @@ export const Payoff = class extends Pair {
  *  An intermediate decision node doesn't cary a value.
  */
 export const TreeNode = class {
+    payoff: any;
+    node_name: any;
     children: any;
     value: any;
-    constructor(value) {
-        this.value = value;
+    move: any;
+    constructor(name:string, payoff: any) {
+        this.node_name = name;
+        this.payoff = payoff
+        this.value = 0
         this.children = [];
     }
 
@@ -59,8 +64,8 @@ export const TreeNode = class {
 
     get_value(player) {
         if (player == 1) {
-            return this.value.x;
+            return this.payoff.x;
         }
-        return this.value.y;
+        return this.payoff.y;
     }
 };
