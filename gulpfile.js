@@ -6,6 +6,7 @@ const ts = require('gulp-typescript');
 const sources = 
 [
     './*.js',
+    './src/*.js',
     './test/*.js',
     './finance/**/*.js',
     './lemke-howson/**/*.js',
@@ -16,6 +17,7 @@ const sources =
 const tsSources = 
 [
     './*.ts',
+    './src/*.ts',
     './test/*.ts',
     './finance/**/*.ts',
     './lemke-howson/**/*.ts',
@@ -26,6 +28,7 @@ const tsSources =
 const tests = 
 [
     './test/*.js',
+    './src/test/*.js',
     './finance/test/*.js',
     './lemke-howson/test/*.js',
     './minmax/test/*.js',
