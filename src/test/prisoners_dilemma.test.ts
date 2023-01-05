@@ -13,19 +13,17 @@ const prisoners_dilemma = function () {
 describe('prisoners dilemma: ', () => {
     let matrix = prisoners_dilemma();
 
-    it('tests check_neighbors', (done) => {
+    it('tests check_neighbors', () => {
         let cn = (i, j) => check_neighbors(matrix, i, j);
         expect(cn(0, 0)).toEqual(false);
         expect(cn(0, 1)).toEqual(false);
         expect(cn(1, 0)).toEqual(false);
         expect(cn(1, 1)).toEqual(true);
-        done();
     });
 
-    it('has a pure nash equilibrium', done => {
+    it('has a pure nash equilibrium', () => {
         let pure = find_pure_strategy_payoff(matrix);
         expect(pure[0].x).toEqual(1);
         expect(pure[0].y).toEqual(1);
-        done();
     });
 });
