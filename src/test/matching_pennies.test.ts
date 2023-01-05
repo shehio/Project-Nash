@@ -30,6 +30,7 @@ describe('matching pennies', () =>
     {
         let matrix = matching_pennies()
         const pure = find_pure_strategy_payoff(matrix);
+        expect(pure).toEqual([]);
     });
 
     it('has mixed nash equilibrium', () => 
