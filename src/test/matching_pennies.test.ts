@@ -10,7 +10,7 @@ const matching_pennies = function () {
 
 describe('matching pennies', () =>
 {
-    it('tests check_neighbors', (done) => 
+    it('tests check_neighbors', () => 
     {
         let matrix = matching_pennies()
         const rows = 2;
@@ -24,17 +24,15 @@ describe('matching pennies', () =>
                 expect(cn(i, j)).toBe(false);
             }
         }
-        done();
     });
 
-    it('does not have a pure nash equilibrium', done =>
+    it('does not have a pure nash equilibrium', () =>
     {
         let matrix = matching_pennies()
         const pure = find_pure_strategy_payoff(matrix);
-        done();
     });
 
-    it('has mixed nash equilibrium', done => 
+    it('has mixed nash equilibrium', () => 
     {
         let matrix = matching_pennies()
         const expected = {p: 0.5, average_payoff: 0};
@@ -46,7 +44,5 @@ describe('matching pennies', () =>
 
         const p2 = mixed.shift();
         expect(p2).toEqual(expected);
-
-        done();
     });
 });
