@@ -1,4 +1,4 @@
-import { Payoff } from '../../src/types'
+import { Payoff } from '../../types'
 import { create_tableaux, make_pivoting_step, solve, find_equilibrium } from '../index'
 import { normalize_equilibrium } from '../helpers'
 
