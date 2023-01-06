@@ -1,4 +1,4 @@
-import { Payoff } from "../types";
+import { Payoff } from "../../types";
 import { check_neighbors, find_pure_strategy_payoff, find_mixed_strategy_payoff  } from "../index";
 const rows = 2;
 const cols = 2;

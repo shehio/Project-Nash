@@ -1,4 +1,4 @@
-import { Pair } from './types'
+import { Pair } from '../types'
 const rows = 2;
 const cols = 2;
 
