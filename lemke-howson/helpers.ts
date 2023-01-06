@@ -1,44 +1,64 @@
-import { Payoff } from '../src/types'
+import { validated_array, validate_matrix } from './validations'
 
 const zero = 0;
 const one = 1;
 
-export function normalize_equilibrium(matrix) {
-    if (typeof matrix === 'undefined') {
-        throw new Error('Matrix is undefined.');
-    }
-
-    let types = new Array(typeof matrix[zero], typeof matrix[one]);
+/**
+ *  Add the absolute value of lowest element to all elements.
+*/
+export function normalize_matrices(matrix) {    
+    let min = find_minimum(matrix)
     
-    if ('undefined' in types) {
-        throw new Error('Matrix has empty probabilities.');
-    }
+    if (min > 0) { return matrix }
 
-    for (let arr of matrix) {
-        // Also, add a 0 < n < 1 check?
-        for (let element of arr) 
-        {
-            if (typeof element === 'number') 
-            {
-                continue;
-            }
+    min = - min + 1;
+    let ret = [];
 
-            throw new Error('Matrix has probabilities that are not numbers.');
+    for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix[i].length; ++j) {
+            matrix[i][j].x += min
+            matrix[i][j].y += min
         }
     }
 
-    var ret = [];
-    var p1A = [];
-    var p2A = [];
+    return matrix;
+}
 
-    // Transposing n * 2 matrix
+export function normalize_equilibrium(matrix) {
+    validate_matrix(matrix)
+
+    var p1_probabilities = [];
+    var p2_probabilities = [];
+
     for(let i = 0; i < matrix.length; ++i) {
-        p1A.push(matrix[i][zero]);
-        p2A.push(matrix[i][one]);
+        p1_probabilities.push(matrix[i][zero]);
+        p2_probabilities.push(matrix[i][one]);
     }
 
-    ret.push(normalize(p1A));
-    ret.push(normalize(p2A));
+    return [normalize(p1_probabilities), normalize(p2_probabilities)];
+}
+
+function find_minimum(matrix) {
+    let min = Infinity;
+
+    for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix[i].length; ++j) {
+            min = Math.min(matrix[i][j].x, matrix[i][j].y, min);
+        }
+    }
+
+    return min
+}
+
+function normalize(arr) {
+    validated_array(arr)
+
+    let norm = 0;
+    let ret = [];
+
+    for (let i of arr) { norm = norm + i }
+    for (let i of arr) { ret.push(i / norm); }
+
     return ret;
 }
 
@@ -59,62 +79,4 @@ export function range(start, stop, step = 1): number[] {
     }
 
     return result;
-}
-
-
-
-/**
-*  @todo: embed methods to prevent user directly access x, and y (fields) [Design of API].
-*  FYI, can overflow.
-*/
-export function normalize_matrices(matrix) {    
-    // find the lowest element
-    let min = Infinity;
-
-    for (let i = 0; i < matrix.length; i++) {
-        for (let j = 0; j < matrix[i].length; ++j)
-        {
-            min = Math.min(matrix[i][j].x, matrix[i][j].y, min);
-        }
-    }
-    
-    if (min > 0) {
-        return matrix;
-    }
-
-    min = - min + 1;
-    let ret = [];
-
-    for (let i = 0; i < matrix.length; i++) {
-        let arr = [];
-
-        for (let j = 0; j < matrix[i].length; ++j) {
-            arr.push(new Payoff(matrix[i][j].x + min, matrix[i][j].y + min));
-        }
-
-        ret.push(arr);
-    }
-
-    return ret;
-}
-
-export function normalize(arr) {
-    if (typeof arr === 'undefined') 
-    {
-        throw new Error('Array is undefined.');
-    }
-
-    let norm = 0;
-
-    for (let i of arr) {
-        norm = norm + i;
-    }
-
-    let ret = [];
-
-    for (let i of arr) {
-        ret.push(i / norm);
-    }
-
-    return ret;
 }
