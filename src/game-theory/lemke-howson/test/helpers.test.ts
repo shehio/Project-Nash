@@ -1,4 +1,4 @@
-import { Payoff } from '../../types'
+import { Payoff } from '../../../types'
 import { range, normalize_matrices } from '../helpers'
 
 const zero = 0;
