@@ -1,4 +1,3 @@
-
 import { Payoff, TreeNode } from '../../../../types'
 import { minmax } from '../index'
 
@@ -34,13 +33,13 @@ describe('minmax: ', () => {
     it('works', () => {
         const game_tree = example()
         const move = minmax(game_tree, 0)
-        expect(game_tree.move.payoff).toEqual(new Payoff(4, 5))
+        expect(move.payoff).toEqual(new Payoff(4, 5))
 
     });
 
     it('works again', () => {
         const game_tree = another_example()
         const move = minmax(game_tree, 0)
-        expect(game_tree.move.payoff).toEqual(new Payoff(3, 2))
+        expect(move.payoff).toEqual(new Payoff(3, 2))
     });
 });
