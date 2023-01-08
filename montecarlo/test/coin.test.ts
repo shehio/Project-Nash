@@ -1,26 +1,27 @@
-const mc = require('../index.js');
+import { run, d1 } from './../index'
 
-var mean = 0;
-/**
- *  @todo: some modularity and clean code.
- */
-/**
- *  send an object option along with the function name, instead of trivial global variable.
- */
+const mean = 0
 
-function coin_flip(){
-    let sample_number = 100000;
-    let generator = mc.d1; 
-    let estimator_function = check_mean;
-    return mc.run(sample_number, generator, estimator_function);
-}
-
-
-function check_mean(point){
-    if(point.x > mean) {
+const check_mean = (point) => {
+    if (point.x > mean) {
         return true;
     }
     return false;
 }
 
+const coin_flip = () => {
+    let sample_number = 100000;
+    let generator = d1; 
+    let estimator_function = check_mean;
+    return run(sample_number, generator, estimator_function);
+}
+
 console.log(coin_flip());
+
+describe('Montecarlo coin flip: ', () => {
+    it('works', () => {
+        const flip = coin_flip()
+        expect(flip).toBeCloseTo(0.5, 2)
+
+    });
+});
