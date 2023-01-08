@@ -1,4 +1,4 @@
-import { Payoff } from "../../../types";
+import { Payoff } from "../../../../types";
 import { check_neighbors, find_pure_nash_equilibrium, find_mixed_nash_equilibrium  } from "../index";
 
 const prisoners_dilemma = function () {
