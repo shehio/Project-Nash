@@ -1,5 +1,5 @@
-import { Payoff } from "../../types";
-import { check_neighbors, find_pure_strategy_payoff, find_mixed_strategy_payoff  } from "../index";
+import { Payoff } from "../../../types";
+import { check_neighbors, find_pure_nash_equilibrium, find_mixed_nash_equilibrium  } from "../index";
 
 const matching_pennies = function () {
     const matrix = new Array();
@@ -29,7 +29,7 @@ describe('matching pennies', () =>
     it('does not have a pure nash equilibrium', () =>
     {
         let matrix = matching_pennies()
-        const pure = find_pure_strategy_payoff(matrix);
+        const pure = find_pure_nash_equilibrium(matrix);
         expect(pure).toEqual([]);
     });
 
@@ -37,13 +37,13 @@ describe('matching pennies', () =>
     {
         let matrix = matching_pennies()
         const expected = {p: 0.5, average_payoff: 0};
-        const mixed = find_mixed_strategy_payoff(matrix);
+        const mixed = find_mixed_nash_equilibrium(matrix);
         expect(mixed.length).toEqual(2);
 
-        const p1 = mixed.shift();
+        const p1 = mixed[0];
         expect(p1).toEqual(expected);
 
-        const p2 = mixed.shift();
+        const p2 = mixed[1];
         expect(p2).toEqual(expected);
     });
 });

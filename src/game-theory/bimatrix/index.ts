@@ -1,4 +1,4 @@
-import { Pair } from '../types'
+import { Pair } from '../../types'
 const rows = 2;
 const cols = 2;
 
@@ -17,7 +17,7 @@ export function check_neighbors(matrix, row, col)
 }
 
 
-export function find_pure_strategy_payoff(matrix) {
+export function find_pure_nash_equilibrium(matrix) {
     var pure = new Array();
     for (var i = 0; i < rows; ++i) {
         for (var j = 0; j < cols; ++j) {
@@ -29,7 +29,7 @@ export function find_pure_strategy_payoff(matrix) {
     return pure;
 }
 
-export function find_mixed_strategy_payoff(matrix) {
+export function find_mixed_nash_equilibrium(matrix) {
     var mixed = new Array();
     let r1c1 = matrix[0][0];
     let r1c2 = matrix[0][1];
