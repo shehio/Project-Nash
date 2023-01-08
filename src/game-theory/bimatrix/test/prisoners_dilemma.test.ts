@@ -1,5 +1,5 @@
-import { Payoff } from "../../types";
-import { check_neighbors, find_pure_strategy_payoff, find_mixed_strategy_payoff  } from "../index";
+import { Payoff } from "../../../types";
+import { check_neighbors, find_pure_nash_equilibrium, find_mixed_nash_equilibrium  } from "../index";
 
 const prisoners_dilemma = function () {
     let matrix =
@@ -22,7 +22,7 @@ describe('prisoners dilemma: ', () => {
     });
 
     it('has a pure nash equilibrium', () => {
-        let pure = find_pure_strategy_payoff(matrix);
+        let pure = find_pure_nash_equilibrium(matrix);
         expect(pure[0].x).toEqual(1);
         expect(pure[0].y).toEqual(1);
     });
