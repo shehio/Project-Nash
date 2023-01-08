@@ -1,5 +1,5 @@
-import { Pair as Point } from '../../src/types'
-import { run } from './../index'
+import { Pair as Point } from '../../types'
+import { run } from '../index'
 
 const zero = 0;
 const one = 1;
