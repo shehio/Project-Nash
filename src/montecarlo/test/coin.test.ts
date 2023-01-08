@@ -1,4 +1,4 @@
-import { run, d1 } from './../index'
+import { run, d1 } from '../index'
 
 const mean = 0
 
