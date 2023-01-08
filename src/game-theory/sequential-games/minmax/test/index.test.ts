@@ -1,5 +1,5 @@
 
-import { Payoff, TreeNode } from '../../src/types'
+import { Payoff, TreeNode } from '../../../../types'
 import { minmax } from '../index'
 
 var example = function () {
