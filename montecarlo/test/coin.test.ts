@@ -1,4 +1,4 @@
-const mc = require('./../index.js');
+const mc = require('../index.js');
 
 var mean = 0;
 /**
