@@ -100,10 +100,16 @@ function pick_row(matrix, col)
 
     for (let i = 0; i < n - 1; i++) 
     {
-        if (matrix[i][last_col] / matrix[i][col] < ratio) 
+        if (matrix[i][col] <= 0)
+        {
+            continue;
+        }
+
+        let current_ratio = matrix[i][last_col] / matrix[i][col];
+        if (current_ratio < ratio) 
         {
             index = i;
-            ratio = matrix[i][last_col] / matrix[i][col];
+            ratio = current_ratio;
         }
     }
 
