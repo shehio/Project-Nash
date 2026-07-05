@@ -1,46 +1,27 @@
-import { Moment } from 'moment'
-import { stockHelper } from '../stock.js'
-const zero = 0;
+import { StockHelper } from '../stock'
 
-// @todo: add some external file for literals.
-const thousand = 1000;
-const period = 'd';
-const one = 1;
-const year = 'year';
-const format = 'YYYY-MM-DD';
-const symbol = 'GOOGL';
-const from = 'from';
-const to = 'to';
-const l1 = 'l1';
-const mean = 'mean';
-const std = 'std';
-
-describe('range: ', () => 
+describe('StockHelper: ', () =>
 {
-    it('works', () => 
+    it('calculates arithmetic returns from adjusted close prices', () =>
     {
-        let dates = {};
-        // dates['to'] = new Moment().format(format);
-        // dates['from'] = moment().subtract(one, year).calendar(null, { sameElse: format });
-        stockHelper.getHisoricalPrices(symbol, dates, period);
+        let quotes = [
+            { adjClose: 100 },
+            { adjClose: 110 },
+            { adjClose: 99 }
+        ];
+
+        let returns = StockHelper.calculateArithmaticReturnsForAdjClose(quotes);
+
+        expect(returns.length).toEqual(2);
+        expect(returns[0]).toBeCloseTo(0.1, 10);
+        expect(returns[1]).toBeCloseTo(-0.1, 10);
     });
 
-    // END to END
-    
-    /// var experiment = () => 
-    // {
-    // let dates = new Map();
-    // dates[to] = moment().format(format);
-    // dates[from] = moment().subtract(one, year).calendar(null, { sameElse: format });
-    // let fields = [l1];
-    // get_todays(symbol, fields).
-    //     then((snapshot) => module.original_price = snapshot.lastTradePriceOnly).
-    //     then(() => get_historical(symbol, dates, period)).
-    //     then((quotes) => preprocess(quotes)).
-    //     then((data) => calculate_estimators(data)).
-    //     then((estimators) => module.estimated = estimators).
-    //     then(() => calculate_price()).
-    //     then((data => console.log(data))).
-    //     catch((error) => console.log(error));
-    // };
+    it('calculates mean and standard deviation of samples', () =>
+    {
+        let stats = StockHelper.getStats([2, 4, 4, 4, 5, 5, 7, 9]);
+
+        expect(stats['mean']).toEqual(5);
+        expect(stats['std']).toBeCloseTo(Math.sqrt(32 / 7), 10);
+    });
 });
