@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shehio/nash.git"
+    "url": "git+https://github.com/shehio/Project-Nash.git"
   },
   "author": "shehio",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/shehio/nash/issues"
+    "url": "https://github.com/shehio/Project-Nash/issues"
   },
-  "homepage": "https://github.com/shehio/nash#readme",
+  "homepage": "https://github.com/shehio/Project-Nash#readme",
   "devDependencies": {
     "chai": "^3.5.0",
     "eslint": "^6.8.0",

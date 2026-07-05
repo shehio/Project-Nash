@@ -1,10 +1,32 @@
 <h1 align="center"> Project-Nash </h1>
 
+<p align="center">
+  <a href="https://github.com/shehio/Project-Nash/actions/workflows/ci.yml"><img src="https://github.com/shehio/Project-Nash/actions/workflows/ci.yml/badge.svg?branch=develop" alt="CI"></a>
+</p>
+
 <figure>
   <img src="https://i.ibb.co/5L5ttM0/Russell-Crowe-Jennifer-Connelly-A-Beautiful-Mind-2001.webp" alt="Russell-Crowe-Jennifer-Connelly-A-Beautiful-Mind-2001" style="width:100%">
   <figcaption>I watched the movie <i> A Beautiful Mind </i> when I was young, and it has had a lasting effect on me.</figcaption>
 </figure>
 
+
+## Getting Started
+```bash
+npm install
+npm test
+```
+
+## What's Inside
+| Path | Contents |
+| --- | --- |
+| `src/game-theory/simultaneous-games/lemke-howson` | Lemke-Howson algorithm for Nash equilibria of bimatrix games |
+| `src/game-theory/simultaneous-games/bimatrix` | Pure and mixed Nash equilibria for 2x2 games |
+| `src/game-theory/sequential-games/minmax` | Minimax over game trees |
+| `src/linear-programming` | Simplex method |
+| `src/montecarlo` | Monte Carlo simulations (pi estimation, coin flips) |
+| `src/economic-data` | World Bank API client |
+| `econometrics` | Regression significance and heteroskedasticity tests (Goldfeld-Quandt, White) |
+| `finance` | Stock returns and geometric Brownian motion |
 
 ## FAQ
 #### Why is this repo called Project Nash?
