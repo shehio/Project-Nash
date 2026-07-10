@@ -1,22 +1,9 @@
-// @Todo: Move to a test.
-let cT = new Array(40, 30);
-let A = [];
-A.push(new Array(1, 2));
-A.push(new Array(1, 1));
-A.push(new Array(3, 2));
-let b = new Array(16, 9, 24);
-
-var n = A.length + 1;
-var m = A[0].length + n;
-var last_row = n - 1;
-var last_col = m;
+var n = 0;
+var m = 0;
+var last_row = 0;
+var last_col = 0;
 
 const zero = 0;
-
-/**
- * Example according to: https://people.richland.edu/james/ictcm/2006/simplex.html
- */
-console.log(simplex(matrix(A, b, cT)));
 
 /**
  *  n (rows) = constraints + objective function.
@@ -28,10 +15,15 @@ console.log(simplex(matrix(A, b, cT)));
  */
 function matrix(A, b, cT) 
 {
-    if (A.length != b.length) 
+    if (A.length != b.length)
     {
         return [];
     }
+
+    n = A.length + 1;
+    m = A[0].length + n;
+    last_row = n - 1;
+    last_col = m;
 
     let zeros = [];
 
@@ -66,9 +58,9 @@ function matrix(A, b, cT)
     return ret;
 }
 
-function check(matrix) 
+function check(matrix)
 {
-    for (let i = 0; i < matrix.length; i++) 
+    for (let i = 0; i < last_col; i++)
     {
         if (matrix[last_row][i] < zero) 
         {
@@ -82,7 +74,7 @@ function pivot(matrix)
 {
     let min = Infinity;
     let index = 0;
-    for (let i = 0; i < matrix.length; i++) 
+    for (let i = 0; i < last_col; i++)
     {
         if (matrix[last_row][i] < min) 
         {
@@ -139,16 +131,32 @@ function scale_matrix(matrix, row, col)
     }
 }
 
-function simplex(matrix) 
+function simplex(matrix)
 {
-    console.log(matrix);
-    while (!check(matrix)) 
+    while (!check(matrix))
     {
         let col = pivot(matrix);
         let row = pick_row(matrix, col);
         scale_row(matrix, row, col);
-        console.log(matrix);
         scale_matrix(matrix, row, col);
-        console.log(matrix);
     }
+
+    return matrix;
+}
+
+module.exports = { matrix, simplex };
+
+/**
+ * Example according to: https://people.richland.edu/james/ictcm/2006/simplex.html
+ */
+if (require.main === module)
+{
+    let cT = new Array(40, 30);
+    let A = [];
+    A.push(new Array(1, 2));
+    A.push(new Array(1, 1));
+    A.push(new Array(3, 2));
+    let b = new Array(16, 9, 24);
+
+    console.log(simplex(matrix(A, b, cT)));
 }

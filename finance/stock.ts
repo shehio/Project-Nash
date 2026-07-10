@@ -34,7 +34,7 @@ export class StockHelper {
         return 0;
       }
 
-      return (quote - quotes[index - 1]) / quote;
+      return (quote - quotes[index - 1]) / quotes[index - 1];
     });
 
     quotes = quotes.slice(one, quotes.length);
