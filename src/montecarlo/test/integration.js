@@ -18,7 +18,7 @@ var check_inside = (fx) => {
  *  @param: x
  *  return: 
  */
-var f = (eval_string, x) => math.eval(eval_string, { x: x });
+var f = (eval_string, x) => math.evaluate(eval_string, { x: x });
 
 /**
  *  @param: eval_string
