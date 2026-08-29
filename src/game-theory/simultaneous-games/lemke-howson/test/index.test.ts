@@ -177,6 +177,27 @@ describe(' solve: ', () => {
         expect(actual).toEqual(expected);
     });
 
+    /**
+     * find_equilibrium zips player one's probabilities with player two's using
+     * a.map, so a wider game (2 x 3) silently dropped player two's third
+     * probability and a taller one (3 x 2) failed inside normalization with a
+     * message about probabilities not being numbers. Reject the input instead.
+     */
+    it('rejects non-square games', () => {
+        let wide = [
+            [new Payoff(3, 3), new Payoff(0, 0), new Payoff(1, 2)],
+            [new Payoff(0, 0), new Payoff(2, 2), new Payoff(2, 1)]
+        ];
+        let tall = [
+            [new Payoff(3, 3), new Payoff(0, 0)],
+            [new Payoff(0, 0), new Payoff(2, 2)],
+            [new Payoff(1, 1), new Payoff(1, 1)]
+        ];
+
+        expect(() => solve(wide)).toThrow(/square/);
+        expect(() => solve(tall)).toThrow(/square/);
+    });
+
     it('matching pennies', () => {
         let matrix = [
             [new Payoff(1, -1), new Payoff(-1, 1)],
