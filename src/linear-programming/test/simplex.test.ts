@@ -34,4 +34,25 @@ describe('simplex: ', () => {
     it('returns an empty matrix when constraints and bounds mismatch', () => {
         expect(matrix([[1, 2]], [16, 9], [40, 30])).toEqual([]);
     });
+
+    /**
+     * Maximize x subject to -x + y <= 1. The pivot column has no positive
+     * entry, so nothing bounds x. This used to loop forever.
+     */
+    it('throws on an unbounded program instead of looping', () => {
+        expect(() => simplex(matrix([[-1, 1]], [1], [1, 0])))
+            .toThrow('The linear program is unbounded.');
+    });
+
+    it('leaves the caller\'s constraints and objective untouched', () => {
+        let cT = [40, 30];
+        let A = [[1, 2], [1, 1], [3, 2]];
+        let b = [16, 9, 24];
+
+        matrix(A, b, cT);
+
+        expect(A).toEqual([[1, 2], [1, 1], [3, 2]]);
+        expect(cT).toEqual([40, 30]);
+        expect(b).toEqual([16, 9, 24]);
+    });
 });
