@@ -1,11 +1,13 @@
 import { normalize_equilibrium, range, normalize_matrices } from './helpers'
-import { validate_input, validate_tableaux } from './validations'
+import { validate_game, validate_input, validate_tableaux } from './validations'
 
 const zero = 0;
 const one = 1;
 const two = 2;
 
 export function solve(game) {
+    validate_game(game);
+
     let p1_strategies_count = game.length;
 
     game = normalize_matrices(game);

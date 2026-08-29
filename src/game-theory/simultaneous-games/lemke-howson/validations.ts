@@ -53,3 +53,11 @@ export function validate_tableaux(tableaux, eb_var, p1_strategies_count) {
         throw ('Invalid number of strategies for player 1.');
     }
 }
+
+export function validate_game(game) {
+    for (let row of game) {
+        if (row.length !== game.length) {
+            throw new Error(`Only square games are supported: player one has ${game.length} strategies, player two has ${row.length}.`);
+        }
+    }
+}

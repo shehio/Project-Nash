@@ -1,4 +1,3 @@
-const data_storage = require('./../data/index.js');
 const stats = require('simple-statistics');
 
 // let's begin with the simplist hypothesis, Gauss–Markov assumption are satistfied,
@@ -67,6 +66,9 @@ var regression_significance = function (x, y, mu = 0)
 
 var quick_test = function () 
 {    
+    // Required here rather than at the top: the module fires an HTTP request on load.
+    const data_storage = require('./../src/economic-data/index.js');
+
     // Data from WorldBank
     let gdp_percapita = data_storage.make_request(['usa'], 'NY.GDP.PCAP.CD', 1960, 2010)[0].slice(1);
     let life_expecatncy = data_storage.make_request(['usa'], 'SP.DYN.LE00.IN', 1960, 2010)[0].slice(1);
