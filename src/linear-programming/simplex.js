@@ -32,28 +32,22 @@ function matrix(A, b, cT)
         zeros.push(0);
     }
 
-    for (let i = 0; i < cT.length; i++) 
-    {
-        cT[i] = -cT[i];
-    }
-
+    let objective = cT.map((coefficient) => -coefficient);
 
     let ret = [];
     let i = 0;
 
     // for a deep copy
-    for (; i < A.length; i++) 
+    for (; i < A.length; i++)
     {
         let arr = zeros.concat();
         let basic = arr.slice(0, i).
             concat([1]).
             concat(arr.slice(i + 1, n));
-        A[i] = A[i].concat(basic).concat(b[i]);
-        ret.push(A[i]);
+        ret.push(A[i].concat(basic).concat(b[i]));
     }
 
-    cT = cT.concat(zeros.slice(0, i)).concat([1]).concat([0]);
-    ret.push(cT);
+    ret.push(objective.concat(zeros.slice(0, i)).concat([1]).concat([0]));
 
     return ret;
 }
@@ -85,12 +79,16 @@ function pivot(matrix)
     return index;
 }
 
-function pick_row(matrix, col) 
+/**
+ *  Returns -1 when the pivot column holds no positive entry: nothing bounds the
+ *  entering variable, so the linear program is unbounded.
+ */
+function pick_row(matrix, col)
 {
     let ratio = Infinity;
-    let index = 0;
+    let index = -1;
 
-    for (let i = 0; i < n - 1; i++) 
+    for (let i = 0; i < n - 1; i++)
     {
         if (matrix[i][col] <= 0)
         {
@@ -137,6 +135,12 @@ function simplex(matrix)
     {
         let col = pivot(matrix);
         let row = pick_row(matrix, col);
+
+        if (row === -1)
+        {
+            throw new Error('The linear program is unbounded.');
+        }
+
         scale_row(matrix, row, col);
         scale_matrix(matrix, row, col);
     }
