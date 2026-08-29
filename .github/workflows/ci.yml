@@ -5,6 +5,10 @@ on:
     branches: [develop, master]
   pull_request:
 
+# The token only ever needs to read this repository.
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
